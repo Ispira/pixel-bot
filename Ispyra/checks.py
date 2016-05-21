@@ -9,7 +9,7 @@ def allowed(perm, pref):
     def permission(ctx):
         uid = ctx.message.author.id
         if perm == 0:
-            return uid not in blacklist
+            return uid not in blacklist and pref is ctx.prefix
         elif perm == 1:
             return uid in bot_masters and uid not in blacklist and pref is ctx.prefix
     return commands.check(permission)
