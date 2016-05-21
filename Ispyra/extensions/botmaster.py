@@ -8,8 +8,7 @@ class Botmaster():
         self.bot = bot
 
     @commands.command()
-    @prefix('$')
-    @allowed(1)
+    @allowed(1, '$')
     async def quit(self):
         await self.bot.say("Bye...")
         await self.bot.logout()

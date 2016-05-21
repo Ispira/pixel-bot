@@ -9,8 +9,7 @@ class Matchmaking():
         self.bot = bot
     
     @commands.command()
-    @prefix('^')
-    @allowed(0)
+    @allowed(0, '^')
     async def matchmaking(self):
         await self.bot.say("Coming soon.")
 

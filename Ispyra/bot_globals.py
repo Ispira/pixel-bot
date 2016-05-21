@@ -26,7 +26,7 @@ def create_log(log_folder, file_name, file_number=0):
         create_log(log_folder, file_name, file_number)
 
 
-version = "v1.0.0"
+version = "v1.0.1"
 
 #Extensions
 extensions = []

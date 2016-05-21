@@ -2,7 +2,7 @@ import sys
 
 from discord.ext import commands
 from bot_globals import *
-from checks import allowed, prefix
+from checks import *
 
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
@@ -123,8 +123,7 @@ async def on_server_update(before, after):
 ## Regardless of loaded extensions
 #Load extensions
 @bot.command(pass_context=True)
-@prefix('$')
-@allowed(1)
+@allowed(1, '$')
 async def load(ctx, name: str):
     try:
         bot.load_extension(name)
@@ -138,8 +137,7 @@ async def load(ctx, name: str):
 
 #Unload extensions
 @bot.command(pass_context=True)
-@prefix('$')
-@allowed(1)
+@allowed(1, '$')
 async def unload(ctx, name: str):
     bot.unload_extension(name)
     await bot.say("Unloaded {0}."

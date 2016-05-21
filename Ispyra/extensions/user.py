@@ -9,8 +9,7 @@ class User():
         self.bot = bot
     
     @commands.command()
-    @prefix('|')
-    @allowed(0)
+    @allowed(0, '|')
     async def info(self):
         await self.bot.say("Ispyra {0} by Ispira (https://github.com/Ispira/Ispyra)"
         .format(version))
