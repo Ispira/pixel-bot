@@ -38,7 +38,7 @@ async def on_ready():
     for e in extensions:
         try:
             bot.load_extension(e)
-            extensions_loaded.append(e)
+            extensions_loaded.append(e.split('.')[1])
         except Exception as error:
             exc = "{0}: {1}".format(type(error).__name__, error)
             log_print("Failed to load extension {0}, {1}".format(e, exc))
@@ -126,10 +126,9 @@ async def on_server_update(before, after):
 @allowed(1, '$')
 async def load(ctx, name: str):
     try:
-        bot.load_extension(name)
+        bot.load_extension("extensions.{0}".format(name))
         extensions_loaded.append(name)
-        await bot.say("Loaded {0}."
-        .format(name))
+        await bot.say("Loaded {0}.".format(name))
     except Exception as error:
         exc = "{0}: {1}".format(type(error).__name__, error)
         log_print("Failed to load extension {0}"
@@ -139,9 +138,8 @@ async def load(ctx, name: str):
 @bot.command(pass_context=True)
 @allowed(1, '$')
 async def unload(ctx, name: str):
-    bot.unload_extension(name)
-    await bot.say("Unloaded {0}."
-    .format(name))
+    bot.unload_extension("extensions.{0}".format(name))
+    await bot.say("Unloaded {0}.".format(name))
 
 bot.run(bot_token)
 sys.exit(0)
