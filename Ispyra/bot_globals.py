@@ -2,7 +2,6 @@
 import configparser
 import logging
 import os
-import sqlite3
 
 #Print to console and log the data
 def log_print(data):
@@ -26,7 +25,7 @@ def create_log(log_folder, file_name, file_number=0):
         create_log(log_folder, file_name, file_number)
 
 
-version = "v1.0.2"
+version = "v1.0.3"
 
 #Extensions
 extensions = []
@@ -54,13 +53,7 @@ bot_pic = config["bot_settings"]["bot_pic"]
 
 #File variables
 log_folder = os.path.abspath(config["files"]["log_folder"])
-database = os.path.abspath(config["files"]["database"])
 
 #Botmasters and blacklist
 bot_masters = open(os.path.abspath("./config/botmasters.txt")).readlines()
 blacklist = open(os.path.abspath("./config/blacklist.txt")).readlines()
-
-#Connect to the database and make sure the matchmaking table exists
-db = sqlite3.connect(database)
-db.execute("""CREATE TABLE IF NOT EXISTS mm
-(id INTEGER, user TEXT, game TEXT, subgame TEXT, gsize INTEGER, need INTEGER, contact TEXT, timer REAL)""")
