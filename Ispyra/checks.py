@@ -2,7 +2,7 @@ from discord.ext import commands
 
 from bot_globals import bot_masters, blacklist
 
-#Check if a user is allowed to use a command
+#Check if a command's prefix is correct and if the user has permission
 #Perm 0 is simply blacklist checking
 #Perm 1 also checks if the user is a botmaster
 def allowed(perm, pref):

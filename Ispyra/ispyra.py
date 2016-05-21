@@ -121,7 +121,7 @@ async def on_server_update(before, after):
 ## COMMANDS ##
 ## These are considered "Base" commands that will always work
 ## Regardless of loaded extensions
-#Load extensions
+## Load extensions
 @bot.command(pass_context=True)
 @allowed(1, '$')
 async def load(ctx, name: str):
@@ -134,7 +134,7 @@ async def load(ctx, name: str):
         log_print("Failed to load extension {0}"
         .format(name, exc))
 
-#Unload extensions
+## Unload extensions
 @bot.command(pass_context=True)
 @allowed(1, '$')
 async def unload(ctx, name: str):
