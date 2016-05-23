@@ -8,6 +8,12 @@ class User():
     def __init__(self, bot):
         self.bot = bot
     
+    ## Apparently ping commands are hip
+    @commands.command()
+    @allowed(0, '|')
+    async def ping(self):
+        await self.bot.say("Pong.")
+    
     ## Version information
     @commands.command()
     @allowed(0, '|')
@@ -29,7 +35,7 @@ class User():
         server_names = []
         for serv in server_list:
             server_names.append(serv.name)
-        await self.bot.say(" | ".join(server_names))
+        await self.bot.say(" | ".join(server_names)) 
 
 def setup(bot):
     bot.add_cog(User(bot))
