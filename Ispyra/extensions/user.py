@@ -1,4 +1,4 @@
-#User commands
+#User commands v1.0.0
 from discord.ext import commands
 
 from bot_globals import version, bot_masters, server_list
@@ -35,7 +35,7 @@ class User():
         server_names = []
         for serv in server_list:
             server_names.append(serv.name)
-        await self.bot.say(" | ".join(server_names)) 
+        await self.bot.say(" | ".join(server_names))
 
 def setup(bot):
     bot.add_cog(User(bot))

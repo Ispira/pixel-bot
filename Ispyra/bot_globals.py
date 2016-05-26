@@ -25,7 +25,7 @@ def create_log(log_folder, file_name, file_number=0):
         create_log(log_folder, file_name, file_number)
 
 
-version = "v1.1.0"
+version = "v1.1.1"
 
 #Extensions
 extensions = []
@@ -47,6 +47,7 @@ contributors = ["Ispira"]
 #Load values from config files
 log_messages = config.getboolean("bot_settings", "log_messages")
 display_purges = config.getboolean("bot_settings", "display_purges")
+music_channel = config["bot_settings"]["music_channel"]
 bot_token = config["bot_settings"]["token"]
 bot_name = config["bot_settings"]["bot_name"]
 bot_pic = config["bot_settings"]["bot_pic"]

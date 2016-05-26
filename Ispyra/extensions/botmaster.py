@@ -1,4 +1,4 @@
-#Botmaster commands
+#Botmaster commands v1.0.0
 import discord
 from discord.ext import commands
 
@@ -22,6 +22,7 @@ class Botmaster():
     @commands.command(pass_context=True)
     @allowed(1, '$')
     async def purge(self, ctx, pamt: int, ptype: str, *, parg: str = ""):
+        pamt += 1
         try:
             #All messages
             if ptype == "all":
