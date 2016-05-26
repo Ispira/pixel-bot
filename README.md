@@ -12,6 +12,9 @@
  - [Python 3.5](https://www.python.org/downloads/)
  - [discord.py](https://github.com/Rapptz/discord.py)
  - [Bot Account/App](https://discordapp.com/developers/applications/) (This but is not made to be a self bot, so email login is not an option)
+ - [libopus (For music extension)](https://www.opus-codec.org/downloads/)
+    - By default music.py (`extensions/music.py`) looks for a .dll, you'll need to change that if you're on linux.
+	- You'll also need the same architecture (32 or 64-bit) version of opus as your Python version.
  - Windows or Linux. It should run fine on OS X or else that runs Python 3.5 but it is NOT supported.
 
 ***Download the bot:***
