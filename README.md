@@ -32,6 +32,12 @@
 
 ## **Commands:**
 All commands assume the bot has the permission on the server to do so (Duh).
+***Built-In***
+
+- `$load <extension>` Attemps to load `<extension>` if available. (Botmaster required)
+- `$unload <extension>` Attemps to unload `<extension>`. (Botmaster required)
+- `$ev `expression`` Evaluates the python ``expression``. (Botmaster required, and MUST BE UNCOMMENTED at the bottom of `ispyra.py`!)
+
 ***User Commands*** *(Extension: user)*
 
  - `|ping` Pong...

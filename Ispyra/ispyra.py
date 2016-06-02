@@ -1,4 +1,5 @@
 import sys
+import asyncio
 
 from discord.ext import commands
 from bot_globals import *
@@ -141,5 +142,27 @@ async def unload(ctx, name: str):
     bot.unload_extension("extensions.{0}".format(name))
     await bot.say("Unloaded {0}.".format(name))
 
+## Eval command for debugging
+#You'll need to uncomment this if you want to use it.
+#But don't do that.
+"""
+@bot.command(pass_context=True)
+@allowed(1, '$')
+async def ev(ctx, *, code: str):
+    code = code.strip("` ")
+    python = "```python\n{0}\n```"
+    result = None
+    
+    try:
+        result = eval(code)
+    except Exception as error:
+        await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
+        return
+        
+    if asyncio.iscoroutine(result):
+        result = await result
+    
+    await bot.say(python.format(result))
+"""
 bot.run(bot_token)
 sys.exit(0)
