@@ -12,11 +12,12 @@ imgur = ImgurClient(imgur_config[0], imgur_config[1])
 
 class Imgur():
     def __init__(self, bot):
-        self.bot = bot      
+        self.bot = bot
     
     @commands.command()
     @allowed(0, '|')
     async def imgur(self, arg: str, *, query: str = ""):
+        """Grab an image from imgur."""
         if arg.lower() == "reddit":
             result = self.bot.loop.run_in_executor(None,
             imgur.subreddit_gallery, query)

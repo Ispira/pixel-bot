@@ -8,7 +8,6 @@ from checks import *
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
 bot = commands.Bot(command_prefix=('|', '^', '$'))
-bot.remove_command("help")
 
 #Change the bot's avatar and name if needed
 async def update_profile():
@@ -126,6 +125,7 @@ async def on_server_update(before, after):
 @bot.command(pass_context=True)
 @allowed(1, '$')
 async def load(ctx, name: str):
+    """Load an extension."""
     try:
         bot.load_extension("extensions.{0}".format(name))
         extensions_loaded.append(name)
@@ -139,30 +139,37 @@ async def load(ctx, name: str):
 @bot.command(pass_context=True)
 @allowed(1, '$')
 async def unload(ctx, name: str):
-    bot.unload_extension("extensions.{0}".format(name))
-    await bot.say("Unloaded {0}.".format(name))
+    """Unload an extension."""
+    try:
+        bot.unload_extension("extensions.{0}".format(name))
+        await bot.say("Unloaded {0}.".format(name))
+    except Exception as error:
+        exc = "{0}: {1}".format(type(error).__name__, error)
+        log_print("Failed to unload extension {0}"
+        .format(name, exc))
 
 ## Eval command for debugging
 #You'll need to uncomment this if you want to use it.
 #But don't do that.
-"""
-@bot.command(pass_context=True)
-@allowed(1, '$')
-async def ev(ctx, *, code: str):
-    code = code.strip("` ")
-    python = "```python\n{0}\n```"
-    result = None
-    
-    try:
-        result = eval(code)
-    except Exception as error:
-        await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
-        return
-        
-    if asyncio.iscoroutine(result):
-        result = await result
-    
-    await bot.say(python.format(result))
-"""
+#
+#@bot.command(pass_context=True)
+#@allowed(1, '$')
+#async def ev(ctx, *, code: str):
+#    """Extremely unsafe eval command."""
+#    code = code.strip("` ")
+#    python = "```python\n{0}\n```"
+#    result = None
+#    
+#    try:
+#        result = eval(code)
+#    except Exception as error:
+#        await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
+#        return
+#        
+#    if asyncio.iscoroutine(result):
+#        result = await result
+#    
+#    await bot.say(python.format(result))
+
 bot.run(bot_token)
 sys.exit(0)

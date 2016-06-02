@@ -35,6 +35,9 @@
 All commands assume the bot has the permission on the server to do so (Duh).
 ***Built-In***
 
+- `|help` Displays normal command help.
+- `$help` Displays botmaster command help.
+- `^help` Displays special command help.
 - `$load <extension>` Attemps to load `<extension>` if available. (Botmaster required)
 - `$unload <extension>` Attemps to unload `<extension>`. (Botmaster required)
 - ```$ev `expression` ``` Evaluates the python `expression`. The expression MUST be enclosed in backticks: ``` ` ```(Botmaster required, and MUST BE UNCOMMENTED at the bottom of `ispyra.py`!)

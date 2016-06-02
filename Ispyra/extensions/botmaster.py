@@ -1,4 +1,4 @@
-#Botmaster commands v1.0.0
+#Botmaster commands v1.0.1
 import discord
 from discord.ext import commands
 
@@ -15,6 +15,7 @@ class Botmaster():
     @commands.command()
     @allowed(1, '$')
     async def quit(self):
+        """Completely closes the bot."""
         await self.bot.say("Bye...")
         await self.bot.logout()
     
@@ -22,6 +23,7 @@ class Botmaster():
     @commands.command(pass_context=True)
     @allowed(1, '$')
     async def purge(self, ctx, pamt: int, ptype: str, *, parg: str = ""):
+        """Purge messages."""
         pamt += 1
         try:
             #All messages
@@ -58,6 +60,7 @@ class Botmaster():
     @commands.command()
     @allowed(1, '$')
     async def nick(self, user: discord.Member, *, nick: str):
+        """Change a user's nickname."""
         try:
             #Remove nickname if the nick is set to '!none'
             if nick.lower() == "!none":
@@ -75,6 +78,7 @@ class Botmaster():
     @commands.command()
     @allowed(1, '$')
     async def playing(self, *, playing: str):
+        """Change the bot's playing status."""
         if playing.lower() == "!none":
             status = None
         else:
@@ -86,6 +90,7 @@ class Botmaster():
     @commands.command(pass_context=True)
     @allowed(1, '$')
     async def inviteme(self, ctx, *, name: str):
+        """Get an invite to a server the bot is connected to, if possible."""
         for serv in server_list:
             if serv.name == name:
                 try:
