@@ -100,6 +100,14 @@ class Botmaster():
                 except HTTPException as error:
                     await self.bot.say("Error getting invite: {0}"
                     .format(error))
+    
+    ## Make the bot leave a server
+    @commands.command(pass_context=True)
+    @allowed(1, '$')
+    async def leave(self, ctx):
+        """Leave the server where this command was received"""
+        await self.bot.say("Alright... I understand I'm not wanted here...")
+        await self.bot.leave_server(ctx.message.server)
         
 def setup(bot):
     bot.add_cog(Botmaster(bot))
