@@ -11,14 +11,6 @@ class Botmaster():
     def __init__(self, bot):
         self.bot = bot
     
-    ## Completely exit the bot
-    @commands.command()
-    @allowed(1, '$')
-    async def quit(self):
-        """Completely closes the bot."""
-        await self.bot.say("Bye...")
-        await self.bot.logout()
-    
     ## Purge messages
     @commands.command(pass_context=True)
     @allowed(1, '$')
