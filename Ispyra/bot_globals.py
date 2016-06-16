@@ -25,7 +25,7 @@ def create_log(log_folder, file_name, file_number=0):
         create_log(log_folder, file_name, file_number)
 
 
-version = "v1.2.0"
+version = "v1.3.0"
 
 #Extensions
 extensions = []
@@ -45,13 +45,14 @@ config.read(os.path.abspath("./config/config.ini"))
 contributors = ["Ispira"]
 
 #Load values from config files
-log_messages = config.getboolean("bot_settings", "log_messages")
-display_purges = config.getboolean("bot_settings", "display_purges")
+#Log settings
+log_messages = config.getboolean("log_settings", "log_messages")
+display_purges = config.getboolean("log_settings", "display_purges")
+#Bot settings
 bot_token = config["bot_settings"]["token"]
 bot_name = config["bot_settings"]["bot_name"]
 bot_pic = config["bot_settings"]["bot_pic"]
-
-#File variables
+#File locations
 log_folder = os.path.abspath(config["files"]["log_folder"])
 
 #Botmasters and blacklist
