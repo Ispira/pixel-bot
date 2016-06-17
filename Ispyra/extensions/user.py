@@ -1,4 +1,4 @@
-#User commands v1.0.1
+#User commands v1.0.2
 from discord.ext import commands
 
 from bot_globals import version, bot_masters, server_list
@@ -10,14 +10,14 @@ class User():
     
     ## Apparently ping commands are hip
     @commands.command()
-    @allowed(0, '|')
+    @prefix('|')
     async def ping(self):
         """Pong."""
         await self.bot.say("Pong.")
     
     ## Version information
     @commands.command()
-    @allowed(0, '|')
+    @prefix('|')
     async def info(self):
         """Display information about this bot."""
         await self.bot.say("Ispyra {0} by Ispira (https://github.com/Ispira/Ispyra)"
@@ -25,7 +25,7 @@ class User():
     
     ## Bot status
     @commands.command()
-    @allowed(0, '|')
+    @prefix('|')
     async def status(self):
         """Display number of botmasters, and connected servers."""
         await self.bot.say("Servers: {0} | Botmasters: {1}"
@@ -33,7 +33,7 @@ class User():
     
     ## List names of currently connected servers
     @commands.command()
-    @allowed(0, '|')
+    @prefix('|')
     async def servers(self):
         """List the names of all currently connected servers."""
         server_names = []

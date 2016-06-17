@@ -1,4 +1,4 @@
-#Imgur extension v1.0.0
+#Imgur extension v1.0.1
 import random
 import asyncio
 
@@ -15,7 +15,7 @@ class Imgur():
         self.bot = bot
     
     @commands.command()
-    @allowed(0, '|')
+    @prefix('|')
     async def imgur(self, arg: str, *, query: str = ""):
         """Grab an image from imgur."""
         if arg.lower() == "reddit":

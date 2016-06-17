@@ -1,11 +1,11 @@
 # **Ispyra**
 #### A discord bot utilizing [discord.py](https://github.com/Rapptz/discord.py) 
 ---
-#### **Command prefixes:** *(Note that these might not be the same for unofficial extensions)*
-#### USER commands are prefixed with a vertical pipe: `|`. Anyone can use them.
-#### ADMIN commands are prefixed with a dollar sign: `$`. Only botmasters can use them.
-#### OTHER commands (E.g. special extensions) are prefixed with a caret: `^`. Permissions will vary between them.
-#### Log files will by default be created in a folder named `logs` beside the ispyra.py file.
+##### **Command prefixes:** *(Note that these might not be the same for unofficial extensions)*
+##### USER commands are prefixed with a vertical pipe: `|`. Anyone can use them.
+##### ADMIN commands are prefixed with a dollar sign: `$`. Only botmasters can use them.
+##### OTHER commands (E.g. special extensions) are prefixed with a caret: `^`. Permissions will vary between them.
+###### Log files will by default be created in a folder named `logs` beside the ispyra.py file.
 
 ## **Installation**:
 ***Prerequisites:***
@@ -26,7 +26,7 @@
  - Edit `config.ini` in the `config` folder to set the bot up
    - Edit any extra configs in the `extensions/extension` folder(s). Such as `extensions/imgur/config.txt` with the correct information
  - Add botmasters by user ID to `config/botmasters.txt`
- - Add blacklisted user IDs to `config/blacklist.txt`
+ - Add blacklisted user ID to `config/blacklist.txt`
  - Launch the bot:
 	 - `python ispyra.py` or
 	 - `python3 ispyra.py` depending on your operating system.
@@ -35,11 +35,10 @@
 All commands assume the bot has the permission on the server to do so (Duh).
 ***Built-In***
 
-- `|help` Displays normal command help.
-- `$help` Displays botmaster command help.
-- `^help` Displays special command help.
+- `help` Displays help information based on the prefix used. `|help` will be different than `$help` for example.
 - `$load <extension>` Attemps to load `<extension>` if available. (Botmaster required)
 - `$unload <extension>` Attemps to unload `<extension>`. (Botmaster required)
+- `$quit` Closes the bot completely.
 - ```$ev `expression` ``` Evaluates the python `expression`. The expression MUST be enclosed in backticks: ``` ` ```(Botmaster required, and MUST BE UNCOMMENTED at the bottom of `ispyra.py`!)
 
 ***User Commands*** *(Extension: user)*
@@ -51,7 +50,6 @@ All commands assume the bot has the permission on the server to do so (Duh).
 
 ***Botmaster Commands:*** *(Extension: botmaster) (User's ID must be in `config/botmasters.txt` for these to work*
 
- - `$quit` Closes the bot completely.
  - `$purge <amount> <all | user @User | role @Role>` Iterates through messages and deletes any that fit the arguments.
 	 - `$purge 5 all` will delete ALL of the last 5 messages.
 	 - `$purge 5 user @User` will delete any messages that the user you `@Mention`'d sent within the last 5 messages.

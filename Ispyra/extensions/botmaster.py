@@ -1,4 +1,4 @@
-#Botmaster commands v1.0.1
+#Botmaster commands v1.0.2
 import discord
 from discord.ext import commands
 
@@ -13,7 +13,8 @@ class Botmaster():
     
     ## Purge messages
     @commands.command(pass_context=True)
-    @allowed(1, '$')
+    @prefix('$')
+    @permission(manage_messages=True)
     async def purge(self, ctx, pamt: int, ptype: str, *, parg: str = ""):
         """Purge messages."""
         pamt += 1
@@ -50,7 +51,8 @@ class Botmaster():
     
     ## Change a user's nickname
     @commands.command()
-    @allowed(1, '$')
+    @prefix('$')
+    @permission(manage_nicknames=True)
     async def nick(self, user: discord.Member, *, nick: str):
         """Change a user's nickname."""
         try:
@@ -68,7 +70,8 @@ class Botmaster():
     
     ## Change the bot's status
     @commands.command()
-    @allowed(1, '$')
+    @prefix('$')
+    @botmaster()
     async def playing(self, *, playing: str):
         """Change the bot's playing status."""
         if playing.lower() == "!none":
@@ -80,7 +83,8 @@ class Botmaster():
     
     ## Get an invite to a server the bot is connected to, if possible.
     @commands.command(pass_context=True)
-    @allowed(1, '$')
+    @prefix('$')
+    @botmaster()
     async def inviteme(self, ctx, *, name: str):
         """Get an invite to a server the bot is connected to, if possible."""
         for serv in server_list:
@@ -90,12 +94,13 @@ class Botmaster():
                     await self.bot.send_message(ctx.message.author,
                     "Invite to {0}: {1}".format(name, invite))
                 except HTTPException as error:
-                    await self.bot.say("Error getting invite: {0}"
+                    await self.bot.s ay("Error getting invite: {0}"
                     .format(error))
     
     ## Make the bot leave a server
     @commands.command(pass_context=True)
-    @allowed(1, '$')
+    @prefix('$')
+    @botmaster()
     async def leave(self, ctx):
         """Leave the server where this command was received"""
         await self.bot.say("Alright... I understand I'm not wanted here...")

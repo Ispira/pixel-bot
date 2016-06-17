@@ -1,15 +1,33 @@
 from discord.ext import commands
 
-from bot_globals import bot_masters, blacklist
+from bot_globals import bot_owner, bot_masters, blacklist
 
-#Check if a command's prefix is correct and if the user has permission
-#Perm 0 is simply blacklist checking
-#Perm 1 also checks if the user is a botmaster
-def allowed(perm, pref):
-    def permission(ctx):
-        uid = ctx.message.author.id
-        if perm == 0:
-            return uid not in blacklist and pref is ctx.prefix
-        elif perm == 1:
-            return uid in bot_masters and uid not in blacklist and pref is ctx.prefix
-    return commands.check(permission)
+#Check if the user is the bot's owner
+def owner(uid):
+    return uid == bot_owner
+
+def is_owner():
+    return commands.check(lambda ctx: owner(ctx.message.author.id))
+
+#Check the command prefix
+def prefix(pref):
+    def check(ctx):
+        if ctx.message.author.id in blacklist:
+            return False
+        elif ctx.prefix == pref:
+            return True
+    return commands.check(check)
+
+#Check if the user is a botmaster
+def botmaster():
+    return commands.check(lambda ctx: ctx.message.author.id in bot_masters)
+
+#Check if the user has permission for the command
+def permission(**perms):
+    def check(ctx):
+        msg = ctx.message
+        if perms is None:
+            return owner(msg.author.id)
+        resolved = msg.channel.permissions_for(msg.author)
+        return all(getattr(resolved, name, None) == value for name, value in perms.items())
+    return commands.check(check)

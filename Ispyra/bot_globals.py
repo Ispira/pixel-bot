@@ -47,9 +47,11 @@ contributors = ["Ispira"]
 #Load values from config files
 #Log settings
 log_messages = config.getboolean("log_settings", "log_messages")
+log_commands = config.getboolean("log_settings", "log_commands")
 display_purges = config.getboolean("log_settings", "display_purges")
 #Bot settings
 bot_token = config["bot_settings"]["token"]
+bot_owner = config["bot_settings"]["bot_owner"]
 bot_name = config["bot_settings"]["bot_name"]
 bot_pic = config["bot_settings"]["bot_pic"]
 #File locations

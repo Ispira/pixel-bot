@@ -88,6 +88,20 @@ async def on_message(message):
     await bot.process_commands(message)
 
 @bot.event
+async def on_command(command, ctx):
+    #Handle logging commands
+    destination = None
+    if ctx.message.channel.is_private:
+        destination = "DM"
+    else:
+        destination = "[{0.server.name}] #{0.channel.name}".format(ctx.message)
+    
+    if log_commands:
+        log_print("Command `{0.content}` issued by `{0.author}`."
+        .format(ctx.message))
+        log_print("Location `{0}`".format(destination))
+
+@bot.event
 async def on_server_join(server):
     #Log it
     log_print("[JOINED] Server: {0}."
@@ -123,7 +137,8 @@ async def on_server_update(before, after):
 ## Regardless of loaded extensions
 ## Completely exit the bot
 @commands.command()
-@allowed(1, '$')
+@prefix('$')
+@is_owner()
 async def quit(self):
     """Completely closes the bot."""
     await self.bot.say("Bye...")
@@ -131,7 +146,8 @@ async def quit(self):
 
 ## Load extensions
 @bot.command(pass_context=True)
-@allowed(1, '$')
+@prefix('$')
+@is_owner()
 async def load(ctx, name: str):
     """Load an extension."""
     try:
@@ -145,12 +161,17 @@ async def load(ctx, name: str):
 
 ## Unload extensions
 @bot.command(pass_context=True)
-@allowed(1, '$')
+@prefix('$')
+@is_owner()
 async def unload(ctx, name: str):
     """Unload an extension."""
     try:
-        bot.unload_extension("extensions.{0}".format(name))
-        await bot.say("Unloaded {0}.".format(name))
+        if name in extensions_loaded:
+            bot.unload_extension("extensions.{0}".format(name))
+            await bot.say("Unloaded {0}.".format(name))
+        else:
+            await bot.say("No extension named {0} is loaded."
+            .format(name))
     except Exception as error:
         exc = "{0}: {1}".format(type(error).__name__, error)
         log_print("Failed to unload extension {0}"
@@ -161,7 +182,8 @@ async def unload(ctx, name: str):
 #But don't do that.
 #
 #@bot.command(pass_context=True)
-#@allowed(1, '$')
+#@prefix('$')
+#@is_owner()
 #async def ev(ctx, *, code: str):
 #    """Extremely unsafe eval command."""
 #    code = code.strip("` ")
