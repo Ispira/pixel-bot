@@ -3,7 +3,7 @@
 ---
 ##### **Command prefixes:** *(Note that these might not be the same for unofficial extensions)*
 ##### USER commands are prefixed with a vertical pipe: `|`. Anyone can use them.
-##### ADMIN commands are prefixed with a dollar sign: `$`. Only botmasters can use them.
+##### ADMIN commands are prefixed with a dollar sign: `$`. They require botmaster, or special permissions.
 ###### Log files will by default be created in a folder named `logs` beside the ispyra.py file.
 
 ## **Installation**:
@@ -34,11 +34,16 @@
 All commands assume the bot has the permission on the server to do so (Duh).
 ***Built-In***
 
-- `help` Displays help information based on the prefix used. `|help` will be different than `$help` for example.
-- `$load <extension>` Attemps to load `<extension>` if available. (Botmaster required)
-- `$unload <extension>` Attemps to unload `<extension>`. (Botmaster required)
-- `$quit` Closes the bot completely.
-- ```$ev `expression` ``` Evaluates the python `expression`. The expression MUST be enclosed in backticks: ``` ` ```(Botmaster required, and MUST BE UNCOMMENTED at the bottom of `ispyra.py`!)
+ - `|help` Shows help for all user commands.
+ - `$help` Shows help for all admin commands.
+ - `$load <extension>` Attemps to load `<extension>` if available.
+    - Bot owner only.
+ - `$unload <extension>` Attemps to unload `<extension>`.
+    - Bot owner only.
+ - `$quit` Closes the bot completely.
+    - Bot owner only.
+ - ```$ev `expression` ``` Evaluates the python `expression`. The expression MUST be enclosed in backticks: ``` ` ```, and MUST BE UNCOMMENTED at the bottom of `ispyra.py`!)
+    - Bot owner only.
 
 ***User Commands*** *(Extension: user)*
 
@@ -47,17 +52,23 @@ All commands assume the bot has the permission on the server to do so (Duh).
  - `|status` Displays amount of servers the bot is connected to, and how many botmasters are configured.
  - `|servers` Displays the list of servers (names only) that the bot is connected to.
 
-***Botmaster Commands:*** *(Extension: botmaster) (User's ID must be in `config/botmasters.txt` for these to work*
+***Botmaster Commands:*** *(Extension: botmaster)*
 
  - `$purge <amount> <all | user @User | role @Role>` Iterates through messages and deletes any that fit the arguments.
-	 - `$purge 5 all` will delete ALL of the last 5 messages.
-	 - `$purge 5 user @User` will delete any messages that the user you `@Mention`'d sent within the last 5 messages.
-	 - `$purge 5 role @Role` will delete any messages that the role you  `@Mention`'d sent within the last 5 messages.
+    - You (and the bot) must have the "Manage Messages" permission.
+	- `$purge 5 all` will delete ALL of the last 5 messages.
+	- `$purge 5 user @User` will delete any messages that the user you `@Mention`'d sent within the last 5 messages.
+	- `$purge 5 role @Role` will delete any messages that the role you  `@Mention`'d sent within the last 5 messages.
  - `$nick @User <name>` Changes the `@Mention`'d user's nickname on the current server to `<name>`.
-	 - Use `!none` as `<name>` to *remove* a nickname.
+    - You (and the bot) must have the "Manage Nicknames" permission.
+	- Use `!none` as `<name>` to *remove* a nickname.
  -  `$playing <status>` Sets the bot's "Playing:" status on discord to `<status>`
-	 - Use `!none` as `<name>` to *remove* the playing status.
+ 	- Botmasters only
+    - Use `!none` as `<name>` to *remove* the playing status.
  - `$inviteme <server name>`Generates an instant invite to `<server name>`'s default channel and sends it to you via private message assuming the bot has permission and is currently connected to that server name. Get the list of currently connected servers using `|servers`.
+    - Botmasters only
+ - `$leave` Makes the bot leave the server the command was sent in.
+    - Botmasters only
  
  ***Imgur Commands:*** *(Extension: imgur) (Must have configured `extensions/imgur/config.txt` with an Imgur API App ID/Secret for these to work!)*
  
