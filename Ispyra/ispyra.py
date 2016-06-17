@@ -135,13 +135,13 @@ async def on_server_update(before, after):
 ## These are considered "Base" commands that will always work
 ## Regardless of loaded extensions
 ## Completely exit the bot
-@commands.command()
+@bot.command()
 @prefix('$')
 @is_owner()
-async def quit(self):
+async def quit():
     """Completely closes the bot."""
-    await self.bot.say("Bye...")
-    await self.bot.logout()
+    await bot.say("Bye...")
+    await bot.logout()
 
 ## Load extensions
 @bot.command(pass_context=True)
