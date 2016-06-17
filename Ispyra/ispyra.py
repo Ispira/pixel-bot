@@ -97,9 +97,8 @@ async def on_command(command, ctx):
         destination = "[{0.server.name}] #{0.channel.name}".format(ctx.message)
     
     if log_commands:
-        log_print("Command `{0.content}` issued by `{0.author}`."
-        .format(ctx.message))
-        log_print("Location `{0}`".format(destination))
+        log_print("Command `{0.content}` issued by `{0.author}` in: {1}"
+        .format(ctx.message, destination))
 
 @bot.event
 async def on_server_join(server):
