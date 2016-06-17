@@ -4,7 +4,6 @@
 ##### **Command prefixes:** *(Note that these might not be the same for unofficial extensions)*
 ##### USER commands are prefixed with a vertical pipe: `|`. Anyone can use them.
 ##### ADMIN commands are prefixed with a dollar sign: `$`. Only botmasters can use them.
-##### OTHER commands (E.g. special extensions) are prefixed with a caret: `^`. Permissions will vary between them.
 ###### Log files will by default be created in a folder named `logs` beside the ispyra.py file.
 
 ## **Installation**:

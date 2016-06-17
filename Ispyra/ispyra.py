@@ -7,7 +7,7 @@ from checks import *
 
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
-bot = commands.Bot(command_prefix=('|', '^', '$'))
+bot = commands.Bot(command_prefix=('|', '$'))
 
 #Change the bot's avatar and name if needed
 async def update_profile():
