@@ -1,53 +1,52 @@
-#Botmaster commands v1.0.2
+#Admin commands v2.0.0
 import discord
+import asyncio
 from discord.ext import commands
 
 from bot_globals import display_purges, server_list
 from checks import *
 
-forbidden = "I don't have permission to do that."
-
-class Botmaster():
+class Admin():
     def __init__(self, bot):
         self.bot = bot
-    
+
     ## Purge messages
-    @commands.command(pass_context=True)
+    @commands.group(pass_context=True)
     @prefix('$')
     @permission(manage_messages=True)
-    async def purge(self, ctx, pamt: int, ptype: str, *, parg: str = ""):
+    async def purge(self, ctx):
         """Purge messages."""
-        pamt += 1
-        try:
-            #All messages
-            if ptype == "all":
-                def check(m):
-                    return True
-                purged = "everyone"
-            #Messages from a specific user
-            elif ptype == "user":
-                def check(m):
-                    return m.author in ctx.message.mentions
-                purged = ctx.message.mentions[0].mention
-            #Messages from a specific role
-            elif ptype == "role":
-                def check(m):
-                    if ctx.message.role_mentions[0] in m.author.roles:
-                        return True
-                purged = ctx.message.role_mentions[0].mention
-            #Incorrect usage
-            else:
-                await self.bot.say("Usage: `$purge <amount> <all | user @User | role @Role>`")
-                return
-            
-            #Purge it!
-            counter = await self.bot.purge_from(ctx.message.channel, limit=pamt, check=check)
-            #Send a notice if the config says so
-            if display_purges:
-                await self.bot.say("{0.mention} purged {1} message(s) from {2}."
-                .format(ctx.message.author, len(counter), purged))
-        except discord.Forbidden:
-            await self.bot.say(forbidden)
+        #The user is in fact doing it wrong
+        if ctx.invoked_subcommand is None:
+            await self.bot.say("Usage: `$purge <all | user | role> <target>`")
+    
+    #Handle the actual purging
+    async def purge_messages(self, location, message, limit, check):
+        removed = await self.bot.purge_from(message.channel,
+        limit=limit, before=message, check=check)
+        #Show info about the purge if the config says so
+        if display_purges:
+            reply = await self.bot.say("{0} message(s) were purged from {1}."
+            .format(len(removed), location))
+            await asyncio.sleep(4)
+            await self.bot.delete_message(reply)
+    
+    @purge.command(pass_context=True)
+    async def all(self, ctx, amt: int):
+        """Remove all messages"""
+        await self.purge_messages("everyone", ctx.message, amt, lambda e: True)
+    
+    @purge.command(pass_context=True)
+    async def user(self, ctx, member: discord.Member, amt: int = 25):
+        """Remove messages from a user"""
+        who = member.mention
+        await self.purge_messages(who, ctx.message, amt, lambda e: e.author == member)
+    
+    @purge.command(pass_context=True)
+    async def role(self, ctx, role: discord.Role, amt: int = 25):
+        """Remove messages from anyone with the specified role"""
+        who = role.mention
+        await self.purge_messages(who, ctx.message, amt, lambda e: role in e.author.roles)
     
     ## Change a user's nickname
     @commands.command()
@@ -94,7 +93,7 @@ class Botmaster():
                     await self.bot.send_message(ctx.message.author,
                     "Invite to {0}: {1}".format(name, invite))
                 except HTTPException as error:
-                    await self.bot.s ay("Error getting invite: {0}"
+                    await self.bot.say("Error getting invite: {0}"
                     .format(error))
     
     ## Make the bot leave a server
@@ -107,4 +106,4 @@ class Botmaster():
         await self.bot.leave_server(ctx.message.server)
         
 def setup(bot):
-    bot.add_cog(Botmaster(bot))
+    bot.add_cog(Admin(bot))
