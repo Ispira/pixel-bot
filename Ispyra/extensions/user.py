@@ -1,8 +1,9 @@
-#User commands v1.0.2
+#User commands v1.1.0
+import xkcd
+import asyncio
 from discord.ext import commands
-
 from bot_globals import version, bot_masters, server_list
-from checks import *
+from checks import prefix
 
 class User():
     def __init__(self, bot):
@@ -40,6 +41,32 @@ class User():
         for serv in server_list:
             server_names.append(serv.name)
         await self.bot.say(" | ".join(server_names))
+    
+    ## XKCD!
+    @commands.command()
+    @prefix('|')
+    async def xkcd(self, number: int = None):
+        """Get a comics from XKCD. Use -1 for random comic."""
+        if number is None:
+            comic = self.bot.loop.run_in_executor(
+                None, xkcd.getLatestComic)
+        elif number is -1:
+            comic = self.bot.loop.run_in_executor(
+                None, xkcd.getRandomComic)
+        else:
+            comic = self.bot.loop.run_in_executor(
+                None, xkcd.getComic, number)
+        while True:
+            await asyncio.sleep(0.25)
+            if comic.done():
+                comic = comic.result()
+                break
+        try:
+            link = comic.getImageLink()
+            title = comic.getTitle()
+        except AttributeError:
+            await self.bot.say("Comic {0} not found.".format(number))
+        await self.bot.say("{0}\n{1}".format(title, link))
 
 def setup(bot):
     bot.add_cog(User(bot))
