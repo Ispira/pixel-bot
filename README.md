@@ -77,8 +77,6 @@ All commands assume the bot has the permission on the server to do so (Duh).
  ***Imgur Commands:*** *(Extension: imgur) (Must have configured `extensions/imgur/config.txt` with an Imgur API App ID/Secret for these to work!)*
  
  - `|imgur reddit <subreddit>` Gives a random image from the subreddit chosen. Example: `|imgur reddit funny`.
- - `|imgur search <query>` Searches imgur with the `query` and displays a random matching image.
- - `|imgur random` Displays an image from imgur's built-in random search.
- - `|imgur top [new]` Shows one of the top images from the gallery. If `new` is included (`|imgur top new`) it will sort the images by newest first.
- - `|imgur hot [new]` Shows one of the hottest images from the gallery. New works the same as with `|imgur top`.
- 
+ - `|imgur search <query>` Searches Imgur with the `query` and displays a random matching image.
+ - `|imgur random` Displays an image from Imgur's built-in random search.
+ - `|imgur viral [top | hot]` Displays an image from the Most Viral section of Imgur. Using `hot` or `top` will adjust sorting as such.
