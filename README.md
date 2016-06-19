@@ -47,6 +47,8 @@ All commands assume the bot has the permission on the server to do so (Duh).
 
 ***User Commands*** *(Extension: user)*
 
+ - `|xkcd [number]` Displays the latest XKCD. If `[number]` is specified it will show that specific comic.
+    - If `[number]` is `-1` it will diplay a random comic.
  - `|ping` Pong...
  - `|info` Displays bot information including current version.
  - `|status` Displays amount of servers the bot is connected to, and how many botmasters are configured.
