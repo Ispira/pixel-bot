@@ -171,6 +171,7 @@ async def unload(ctx, name: str):
     try:
         if name in extensions_loaded:
             bot.unload_extension("extensions.{0}".format(name))
+            extensions_loaded.remove(name)
             await bot.say("Unloaded {0}.".format(name))
         else:
             await bot.say("No extension named {0} is loaded."
