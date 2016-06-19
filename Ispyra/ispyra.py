@@ -149,14 +149,18 @@ async def quit():
 @is_owner()
 async def load(ctx, name: str):
     """Load an extension."""
-    try:
-        bot.load_extension("extensions.{0}".format(name))
-        extensions_loaded.append(name)
-        await bot.say("Loaded {0}.".format(name))
-    except Exception as error:
-        exc = "{0}: {1}".format(type(error).__name__, error)
-        log_print("Failed to load extension {0}"
-        .format(name, exc))
+    ext_file = "extensions/{0}.py".format(name)
+    if os.path.isfile(os.path.abspath(ext_file)):
+        try:
+            bot.load_extension("extensions.{0}".format(name))
+            extensions_loaded.append(name)
+            await bot.say("Loaded {0}.".format(name))
+        except Exception as error:
+            exc = "{0}: {1}".format(type(error).__name__, error)
+            log_print("Failed to load extension {0}"
+            .format(name, exc))
+    else:
+        await bot.say("No extension {0} exists.".format(name))
 
 ## Unload extensions
 @bot.command(pass_context=True)
