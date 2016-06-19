@@ -1,4 +1,4 @@
-#Imgur extension v1.1.0
+#Imgur extension v1.2.0
 import random
 import asyncio
 from discord.ext import commands
@@ -29,6 +29,7 @@ class Imgur():
             "random": lambda: imgur.gallery_random(),
             "top"   : lambda: imgur.gallery("top"),
             "hot"   : lambda: imgur.gallery("hot"),
+            "rehost": lambda: imgur.upload_from_url(query),
         }
         function = case.get(itype, None)
         image = self.bot.loop.run_in_executor(None, function)
@@ -37,7 +38,10 @@ class Imgur():
             if image.done():
                 image = image.result()
                 break
-        await self.bot.say(random.choice(image).link)
+        if itype == "rehost":
+            await self.bot.say(image.get("link", None))
+        else:
+            await self.bot.say(random.choice(image).link)
 
     #Subreddits
     @imgur.command()
@@ -48,7 +52,7 @@ class Imgur():
     #Search
     @imgur.command()
     async def search(self, query: str):
-        """Search imgur for almost anything."""
+        """Search Imgur for almost anything."""
         await self.post_image("search", query)
     
     #Random lol xD :3
@@ -67,5 +71,11 @@ class Imgur():
         if section != "top": section = "hot"
         await self.post_image(section)
     
+    #Rehost an image to imgur
+    @imgur.command()
+    async def rehost(self, url: str):
+        """Rehost an image from any link to Imgur."""
+        await self.post_image("rehost", url)
+
 def setup(bot):
     bot.add_cog(Imgur(bot))
