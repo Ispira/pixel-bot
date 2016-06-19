@@ -46,7 +46,7 @@ class User():
     @commands.command()
     @prefix('|')
     async def xkcd(self, number: int = None):
-        """Get a comics from XKCD. Use -1 for random comic."""
+        """Get a comics from XKCD. Use -1 for a random comic."""
         if number is None:
             comic = self.bot.loop.run_in_executor(
                 None, xkcd.getLatestComic)
