@@ -13,6 +13,7 @@
  - [discord.py](https://github.com/Rapptz/discord.py)
  - [Bot Account/App](https://discordapp.com/developers/applications/) (This but is not made to be a self bot, so email login is not an option)
  - [Imgur API App](https://api.imgur.com/#registerapp) (Required for the `imgur` extension)
+ - [python-xkcd](https://pypi.python.org/pypi/xkcd/) (Required for the `user` extension)
  - Windows or Linux. It should run fine on OS X or else that runs Python 3.5 but it is NOT supported.
 
 ***Download the bot:***
