@@ -16,6 +16,13 @@ class Admin():
     @permission(kick_members=True)
     async def kick(self, member: discord.Member):
         await self.bot.kick(member)
+    
+    ## Ban User
+    @commands.command()
+    @prefix('$')
+    @permission(ban_members=True)
+    async def ban(self, member: discord.Member, purge: int = 7):
+        await self.bot.ban(member, purge)
 
     ## Purge messages
     @commands.group(pass_context=True)
