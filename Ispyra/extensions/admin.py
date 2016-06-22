@@ -37,7 +37,7 @@ class Admin():
                 break
         await self.bot.unban(ctx.message.server, user)
     
-    ## Softban
+    ## Softban user
     @commands.command()
     @prefix('$')
     @permission(ban_members=True)
@@ -46,6 +46,22 @@ class Admin():
         server = member.server
         await self.bot.ban(member, purge)
         await self.bot.unban(server, member)
+    
+    ## Mute user
+    @commands.command()
+    @prefix('$')
+    @permission(mute_members=True)
+    async def mute(self, member: discord.Member, switch: bool = True):
+        """Mute or unmute a user."""
+        await self.bot.server_voice_state(member, mute=switch)
+    
+    ## Deafen user
+    @commands.command()
+    @prefix('$')
+    @permission(deafen_members=True)
+    async def deafen(self, member: discord.Member, switch: bool = True):
+        """Deafen or undeafen a user."""
+        await self.bot.server_voice_state(member, deafen=switch)
 
     ## Purge messages
     @commands.group(pass_context=True)
