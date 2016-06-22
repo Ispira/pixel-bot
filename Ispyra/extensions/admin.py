@@ -1,4 +1,4 @@
-#Admin commands v2.1.0
+#Admin commands v2.1.1
 import discord
 import asyncio
 from discord.ext import commands
@@ -15,6 +15,7 @@ class Admin():
     @prefix('$')
     @permission(kick_members=True)
     async def kick(self, member: discord.Member):
+        """Kick a user."""
         await self.bot.kick(member)
     
     ## Ban User
@@ -22,6 +23,7 @@ class Admin():
     @prefix('$')
     @permission(ban_members=True)
     async def ban(self, member: discord.Member, purge: int = 7):
+        """Ban a user."""
         await self.bot.ban(member, purge)
 
     ## Purge messages
