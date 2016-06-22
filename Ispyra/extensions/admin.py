@@ -1,4 +1,4 @@
-#Admin commands v2.0.0
+#Admin commands v2.0.1
 import discord
 import asyncio
 from discord.ext import commands
@@ -41,6 +41,11 @@ class Admin():
         """Remove messages from a user"""
         who = member.mention
         await self.purge_messages(who, ctx.message, amt, lambda e: e.author == member)
+
+    @purge.command(pass_context=True)
+    async def uid(self, ctx, uid: str, amt: int = 25):
+        """Remove messages from a user by UID"""
+        await self.purge_messages(uid, ctx.message, amt, lambda e: e.author.id == uid)
     
     @purge.command(pass_context=True)
     async def role(self, ctx, role: discord.Role, amt: int = 25):
