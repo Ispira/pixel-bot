@@ -1,4 +1,4 @@
-#Admin commands v2.0.1
+#Admin commands v2.1.0
 import discord
 import asyncio
 from discord.ext import commands
@@ -9,6 +9,13 @@ from checks import *
 class Admin():
     def __init__(self, bot):
         self.bot = bot
+
+    ## Kick user
+    @commands.command()
+    @prefix('$')
+    @permission(kick_members=True)
+    async def kick(self, member: discord.Member):
+        await self.bot.kick(member)
 
     ## Purge messages
     @commands.group(pass_context=True)
