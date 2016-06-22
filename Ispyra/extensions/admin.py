@@ -25,6 +25,16 @@ class Admin():
     async def ban(self, member: discord.Member, purge: int = 7):
         """Ban a user."""
         await self.bot.ban(member, purge)
+    
+    ## Softban
+    @commands.command()
+    @prefix('$')
+    @permission(ban_members=True)
+    async def softban(self, member: discord.Member, purge: int = 1):
+        """Softban (ban then unban) a user."""
+        server = member.server
+        await self.bot.ban(member, purge)
+        await self.bot.unban(server, member)
 
     ## Purge messages
     @commands.group(pass_context=True)
