@@ -18,13 +18,24 @@ class Admin():
         """Kick a user."""
         await self.bot.kick(member)
     
-    ## Ban User
+    ## Ban user
     @commands.command()
     @prefix('$')
     @permission(ban_members=True)
     async def ban(self, member: discord.Member, purge: int = 7):
         """Ban a user."""
         await self.bot.ban(member, purge)
+    
+    ## Unban user
+    @commands.command(pass_context=True)
+    @prefix('$')
+    async def unban(self, ctx, uid: str):
+        """Unban a user by UID."""
+        for banned in await self.bot.get_bans(ctx.message.server):
+            if banned.id == uid:
+                user = banned
+                break
+        await self.bot.unban(ctx.message.server, user)
     
     ## Softban
     @commands.command()
