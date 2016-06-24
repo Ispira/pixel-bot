@@ -89,6 +89,8 @@ async def on_message(message):
 
 @bot.event
 async def on_command(command, ctx):
+    #Like a leetle loading bar for commands
+    await bot.send_typing(ctx.message.channel)
     #Handle logging commands
     destination = None
     if ctx.message.channel.is_private:
