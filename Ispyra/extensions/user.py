@@ -33,6 +33,13 @@ class User():
         await self.bot.say("Servers: {0} | Botmasters: {1} | Extensions: {2}"
         .format(len(server_list), len(bot_masters), len(extensions_loaded)))
     
+    ## Loaded extensions
+    @commands.command()
+    @prefix('|')
+    async def extensions(self):
+        """List of loaded extensions."""
+        await self.bot.say(" | ".join(extensions_loaded))
+    
     ## XKCD!
     @commands.command()
     @prefix('|')
