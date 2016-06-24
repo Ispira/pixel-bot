@@ -1,9 +1,10 @@
 #User commands v1.1.0
 import xkcd
 import asyncio
+import discord
 from discord.ext import commands
-from bot_globals import version, bot_masters, server_list
-from checks import prefix
+from bot_globals import version, bot_masters, server_list, extensions_loaded
+from checks import prefix, permission
 
 class User():
     def __init__(self, bot):
@@ -28,19 +29,9 @@ class User():
     @commands.command()
     @prefix('|')
     async def status(self):
-        """Display number of botmasters, and connected servers."""
-        await self.bot.say("Servers: {0} | Botmasters: {1}"
-        .format(len(server_list), len(bot_masters)))
-    
-    ## List names of currently connected servers
-    @commands.command()
-    @prefix('|')
-    async def servers(self):
-        """List the names of all currently connected servers."""
-        server_names = []
-        for serv in server_list:
-            server_names.append(serv.name)
-        await self.bot.say(" | ".join(server_names))
+        """Display bot status."""
+        await self.bot.say("Servers: {0} | Botmasters: {1} | Extensions: {2}"
+        .format(len(server_list), len(bot_masters), len(extensions_loaded)))
     
     ## XKCD!
     @commands.command()
@@ -67,6 +58,25 @@ class User():
         except AttributeError:
             await self.bot.say("Comic {0} not found.".format(number))
         await self.bot.say("{0}\n{1}".format(title, link))
+    
+    ## Change a user's nickname
+    @commands.command()
+    @prefix('$')
+    @permission(manage_nicknames=True)
+    async def nick(self, user: discord.Member, *, nick: str):
+        """Change a user's nickname."""
+        try:
+            #Remove nickname if the nick is set to '!none'
+            if nick.lower() == "!none":
+                await self.bot.change_nickname(user, None)
+            else:
+                await self.bot.change_nickname(user, nick)
+            await self.bot.say("Nickname set.")
+        except discord.Forbidden:
+            await self.bot.say(forbidden)
+        except discord.HTTPException as error:
+            await bot.say("Unable to change nickname: {0}"
+            .format(error))
 
 def setup(bot):
     bot.add_cog(User(bot))
