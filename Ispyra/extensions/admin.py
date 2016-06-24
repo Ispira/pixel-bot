@@ -70,7 +70,7 @@ class Admin():
         """Purge messages."""
         #The user is in fact doing it wrong
         if ctx.invoked_subcommand is None:
-            await self.bot.say("Usage: `$purge <all | user | role> <target>`")
+            await self.bot.say("Usage: `$purge <all | user | role> <target> [amount]`")
     
     #Handle the actual purging
     async def purge_messages(self, location, message, limit, check):
@@ -84,7 +84,7 @@ class Admin():
             await self.bot.delete_message(reply)
     
     @purge.command(pass_context=True)
-    async def all(self, ctx, amt: int):
+    async def all(self, ctx, amt: int = 10):
         """Remove all messages"""
         await self.purge_messages("everyone", ctx.message, amt, lambda e: True)
     
