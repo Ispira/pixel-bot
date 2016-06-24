@@ -186,26 +186,25 @@ async def unload(ctx, name: str):
 ## Eval command for debugging
 #You'll need to uncomment this if you want to use it.
 #But don't do that.
-#
-#@bot.command(pass_context=True)
-#@prefix('$')
-#@is_owner()
-#async def ev(ctx, *, code: str):
-#    """Extremely unsafe eval command."""
-#    code = code.strip("` ")
-#    python = "```python\n{0}\n```"
-#    result = None
-#    
-#    try:
-#        result = eval(code)
-#    except Exception as error:
-#        await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
-#        return
-#        
-#    if asyncio.iscoroutine(result):
-#        result = await result
-#    
-#    await bot.say(python.format(result))
+@bot.command(pass_context=True, enabled=False)
+@prefix('$')
+@is_owner()
+async def ev(ctx, *, code: str):
+    """Extremely unsafe eval command."""
+    code = code.strip("` ")
+    python = "```python\n{0}\n```"
+    result = None
+    
+    try:
+        result = eval(code)
+    except Exception as error:
+        await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
+        return
+        
+    if asyncio.iscoroutine(result):
+        result = await result
+    
+    await bot.say(python.format(result))
 
 bot.run(bot_token)
 sys.exit(0)
