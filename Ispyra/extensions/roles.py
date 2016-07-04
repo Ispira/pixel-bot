@@ -67,7 +67,7 @@ class Roles():
     async def remrole(self, ctx, role: discord.Role):
         """Remove a role for users to assign to themselves."""
         self.allowed_roles.remove((ctx.message.server, role))
-        await self.bot.say("Roel removed.")
+        await self.bot.say("Role removed.")
 
 def setup(bot):
     bot.add_cog(Roles(bot))
