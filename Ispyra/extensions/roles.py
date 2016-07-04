@@ -48,7 +48,7 @@ class Roles():
         role = find(lambda r: r.name == role, ctx.message.server.roles)
         if role in ctx.message.author.roles:
             await self.bot.remove_roles(ctx.message.author, role)
-            await self.bot.say("You are no longer a memeber of {0}.".format(role.name))
+            await self.bot.say("You are no longer a member of {0}.".format(role.name))
         else:
             await self.bot.say("You are not a member of {0}.".format(role.name))
     
