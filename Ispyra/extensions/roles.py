@@ -56,16 +56,18 @@ class Roles():
     @commands.command(pass_context=True)
     @permission(manage_server=True)
     @prefix('$')
-    async def addrole(self, ctx, role: discord.Role):
+    async def addrole(self, ctx, role: str):
         """Add a role for users to assign to themselves."""
+        role = find(lambda r: r.name == role, ctx.message.server.roles)
         self.allowed_roles.append((ctx.message.server, role))
         await self.bot.say("Role added.")
     
     @commands.command(pass_context=True)
     @permission(manage_server=True)
     @prefix('$')
-    async def remrole(self, ctx, role: discord.Role):
+    async def remrole(self, ctx, role: str):
         """Remove a role for users to assign to themselves."""
+        role = find(lambda r: r.name == role, ctx.message.server.roles)
         self.allowed_roles.remove((ctx.message.server, role))
         await self.bot.say("Role removed.")
 
