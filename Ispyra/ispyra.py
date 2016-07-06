@@ -184,8 +184,8 @@ async def unload(ctx, name: str):
         .format(name, exc))
 
 ## Eval command for debugging
-#You'll need to uncomment this if you want to use it.
-#But don't do that.
+#You'll need to set enabled=True for this to work
+#But don't do that
 @bot.command(pass_context=True, enabled=False)
 @prefix('$')
 @is_owner()
