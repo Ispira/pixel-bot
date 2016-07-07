@@ -1,7 +1,7 @@
 #Role extensions v1.0.0
 #Yeah the code is a bit off, the whole bot is about to be rewritten.
 from discord.ext import commands
-from checks import prefix, permission
+from checks import prefix, permission, botmaster
 import discord
 from discord.utils import find
 
@@ -21,7 +21,6 @@ class Roles():
             await self.bot.say("Usage: `role <get | lose> [args]`")
     
     @role.command(pass_context=True)
-    @prefix('|')
     async def list(self, ctx):
         """List of roles you can add to yourself."""
         msg = ""
@@ -31,8 +30,7 @@ class Roles():
         await self.bot.say("Allowed roles: `{0}`".format(msg))
 
     @role.command(pass_context=True)
-    @prefix('|')
-    async def get(self, ctx, role: str):
+    async def get(self, ctx, *, role: str):
         """Add a role to yourself."""
         role = find(lambda r: r.name == role, ctx.message.server.roles)
         if (ctx.message.server, role) in self.allowed_roles:
@@ -42,8 +40,7 @@ class Roles():
             await self.bot.say("That role is not allowed, or doesn't exist. Try `|role list`")
     
     @role.command(pass_context=True)
-    @prefix('|')
-    async def lose(self, ctx, role: str):
+    async def lose(self, ctx, *, role: str):
         """Remove a role from yourself."""
         role = find(lambda r: r.name == role, ctx.message.server.roles)
         if role in ctx.message.author.roles:
@@ -52,21 +49,18 @@ class Roles():
         else:
             await self.bot.say("You are not a member of {0}.".format(role.name))
     
-    ## Add/Remove self-assignable roles
-    @commands.command(pass_context=True)
-    @permission(manage_server=True)
-    @prefix('$')
-    async def addrole(self, ctx, role: str):
-        """Add a role for users to assign to themselves."""
+    @role.command(pass_context=True)
+    @botmaster()
+    async def add(self, ctx, *, role: str):
+        """Add an assignable role."""
         role = find(lambda r: r.name == role, ctx.message.server.roles)
         self.allowed_roles.append((ctx.message.server, role))
         await self.bot.say("Role added.")
     
-    @commands.command(pass_context=True)
-    @permission(manage_server=True)
-    @prefix('$')
-    async def remrole(self, ctx, role: str):
-        """Remove a role for users to assign to themselves."""
+    @role.command(pass_context=True)
+    @botmaster()
+    async def remove(self, ctx, *, role: str):
+        """Remove an assignable role."""
         role = find(lambda r: r.name == role, ctx.message.server.roles)
         self.allowed_roles.remove((ctx.message.server, role))
         await self.bot.say("Role removed.")
