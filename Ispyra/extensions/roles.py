@@ -18,7 +18,7 @@ class Roles():
     async def role(self, ctx):
         """Role related commands."""
         if ctx.invoked_subcommand is None:
-            await bot.say("Usage: `role <get | lose> [args]`")
+            await self.bot.say("Usage: `role <get | lose> [args]`")
     
     @role.command(pass_context=True)
     @prefix('|')
