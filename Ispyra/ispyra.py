@@ -6,6 +6,8 @@ from discord.ext import commands
 from bot_globals import *
 from checks import *
 
+first_ready = True
+
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
 bot = commands.Bot(command_prefix=('|', '$'))
@@ -35,6 +37,9 @@ async def update_profile():
 #Start up the bot
 @bot.event
 async def on_ready():
+    if not first_ready:
+        log_print("[RESUME] Bot resumed connection.")
+        return
     #Load extensions
     for e in extensions:
         try:
@@ -43,6 +48,9 @@ async def on_ready():
         except Exception as error:
             exc = "{0}: {1}".format(type(error).__name__, error)
             log_print("Failed to load extension {0}, {1}".format(e, exc))
+    
+    #Set that we've done this now
+    first_ready = False
 
     #Update bot's profile
     await update_profile()
