@@ -82,7 +82,7 @@ async def on_ready():
 async def on_message(message):
     #Log the message unless the config says otherwise
     if log_messages:
-        log_print("|{0}|[{1}]<{2}>: {3}"
+        log_print("[{0}] - #{1} <{2}>: {3}"
         .format(message.server, message.channel, message.author, message.content))    
     
     #Don't let the bot do anything with itself
