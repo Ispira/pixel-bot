@@ -1,6 +1,7 @@
 import sys
 import asyncio
 
+from io import StringIO
 from discord.ext import commands
 from bot_globals import *
 from checks import *
@@ -197,14 +198,38 @@ async def ev(ctx, *, code: str):
     
     try:
         result = eval(code)
+        if asyncio.iscoroutine(result):
+            result = await result
     except Exception as error:
         await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
         return
-        
-    if asyncio.iscoroutine(result):
-        result = await result
     
     await bot.say(python.format(result))
 
+## Exec command because I'm a madman
+#If you enable this one you're equally as insane as I am
+#I both respect you, and fear you for that
+@bot.command(pass_context=True, enabled=False)
+@prefix('$')
+@is_owner()
+async def ex(ctx, *, code: str):
+    """The death command"""
+    code = code.strip("```").lstrip("py")
+    code += "import asyncio\nloop = asyncio.get_event_loop"
+    python = "```python\n{0}\n```"
+    result = None
+    env = {}
+    env.update(locals())
+    stdout = sys.stdout
+    redirect =  sys.stdout = StringIO()
+
+    try:
+        exec(code, globals(), env)
+    except Exception as error:
+        await bot.say(python.format(type(error).__name__ + ": " + str(error)))
+    finally:
+        sys.stdout = stdout
+    
+    await bot.say(python.format(redirect.getvalue()))
+
 bot.run(bot_token)
-sys.exit(0)
