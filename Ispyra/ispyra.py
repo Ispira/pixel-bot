@@ -1,13 +1,15 @@
 import sys
 import asyncio
 
+from io import StringIO
 from discord.ext import commands
 from bot_globals import *
 from checks import *
 
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
-bot = commands.Bot(command_prefix=('|', '$'))
+bot = commands.Bot(command_prefix='|', pm_help=True)
+first_ready = True
 
 #Change the bot's avatar and name if needed
 async def update_profile():
@@ -34,6 +36,9 @@ async def update_profile():
 #Start up the bot
 @bot.event
 async def on_ready():
+    if not first_ready:
+        log_print("[RESUME] Bot resumed connection.")
+        return
     #Load extensions
     for e in extensions:
         try:
@@ -89,8 +94,6 @@ async def on_message(message):
 
 @bot.event
 async def on_command(command, ctx):
-    #Like a leetle loading bar for commands
-    await bot.send_typing(ctx.message.channel)
     #Handle logging commands
     destination = None
     if ctx.message.channel.is_private:
@@ -138,7 +141,7 @@ async def on_server_update(before, after):
 ## Regardless of loaded extensions
 ## Completely exit the bot
 @bot.command()
-@prefix('$')
+@allowed()
 @is_owner()
 async def quit():
     """Completely closes the bot."""
@@ -147,7 +150,7 @@ async def quit():
 
 ## Load extensions
 @bot.command(pass_context=True)
-@prefix('$')
+@allowed()
 @is_owner()
 async def load(ctx, name: str):
     """Load an extension."""
@@ -166,7 +169,7 @@ async def load(ctx, name: str):
 
 ## Unload extensions
 @bot.command(pass_context=True)
-@prefix('$')
+@allowed()
 @is_owner()
 async def unload(ctx, name: str):
     """Unload an extension."""
@@ -184,10 +187,10 @@ async def unload(ctx, name: str):
         .format(name, exc))
 
 ## Eval command for debugging
-#You'll need to uncomment this if you want to use it.
-#But don't do that.
-@bot.command(pass_context=True, enabled=False)
-@prefix('$')
+#You'll need to set enabled=True for this to work
+#But don't do that
+@bot.command(pass_context=True, hidden=True, enabled=False)
+@allowed()
 @is_owner()
 async def ev(ctx, *, code: str):
     """Extremely unsafe eval command."""
@@ -197,14 +200,38 @@ async def ev(ctx, *, code: str):
     
     try:
         result = eval(code)
+        if asyncio.iscoroutine(result):
+            result = await result
     except Exception as error:
         await bot.say(python.format(type(error).__name__ + ': ' + str(error)))
         return
-        
-    if asyncio.iscoroutine(result):
-        result = await result
     
     await bot.say(python.format(result))
 
+## Exec command because I'm a madman
+#If you enable this one you're equally as insane as I am
+#I both respect you, and fear you for that
+@bot.command(pass_context=True, hidden=True, enabled=False)
+@allowed()
+@is_owner()
+async def ex(ctx, *, code: str):
+    """The death command"""
+    code = code.strip("```").lstrip("py")
+    code += "import asyncio\nloop = asyncio.get_event_loop"
+    python = "```python\n{0}\n```"
+    result = None
+    env = {}
+    env.update(locals())
+    stdout = sys.stdout
+    redirect =  sys.stdout = StringIO()
+
+    try:
+        exec(code, globals(), env)
+    except Exception as error:
+        await bot.say(python.format(type(error).__name__ + ": " + str(error)))
+    finally:
+        sys.stdout = stdout
+    
+    await bot.say(python.format(redirect.getvalue()))
+
 bot.run(bot_token)
-sys.exit(0)

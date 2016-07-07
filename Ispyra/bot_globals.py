@@ -25,7 +25,7 @@ def create_log(log_folder, file_name, file_number=0):
         create_log(log_folder, file_name, file_number)
 
 
-version = "v1.3.1"
+version = "v1.4.1"
 
 #Extensions
 extensions = []
@@ -58,5 +58,13 @@ bot_pic = config["bot_settings"]["bot_pic"]
 log_folder = os.path.abspath(config["files"]["log_folder"])
 
 #Botmasters and blacklist
-bot_masters = open(os.path.abspath("./config/botmasters.txt")).read().splitlines()
-blacklist = open(os.path.abspath("./config/blacklist.txt")).read().splitlines()
+bot_masters = []
+with open(os.path.abspath("./config/botmasters.txt")) as bm:
+    for line in bm.readlines():
+        if line != "\n":
+            bot_masters.append(line.rstrip("\n"))
+blacklist = []
+with open(os.path.abspath("./config/blacklist.txt")) as bl:
+    for line in bl.readlines():
+        if line != "\n":
+            blacklist.append(line.rstrip("\n"))

@@ -11,11 +11,11 @@ def is_owner():
 
 #Check the command prefix
 #Also checks if the user is blacklisted or not
-def prefix(pref):
+def allowed():
     def check(ctx):
         if ctx.message.author.id in blacklist:
             return False
-        elif ctx.prefix == pref:
+        else:
             return True
     return commands.check(check)
 
