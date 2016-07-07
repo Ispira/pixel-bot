@@ -9,7 +9,7 @@
 ## **Installation**:
 ***Prerequisites:***
 
- - [Python 3.6](https://www.python.org/downloads/) (You absolutely NEED 3.6 or strings will be fucked)
+ - [Python 3.5+](https://www.python.org/downloads/) (In the future you will NEED 3.6 or strings will be fucked)
  - [discord.py](https://github.com/Rapptz/discord.py)
  - [Bot Account/App](https://discordapp.com/developers/applications/) (This but is not made to be a self bot, so email login is not an option)
  - [Imgur API App](https://api.imgur.com/#registerapp) (Required for the `imgur` extension)
