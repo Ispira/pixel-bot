@@ -106,6 +106,18 @@ async def on_command(command, ctx):
         .format(ctx.message, destination))
 
 @bot.event
+async def on_command_error(error, ctx):
+    channel = ctx.message.channel
+    if isinstance(error, commands.NoPrivateMessage):
+        await bot.send_message(channel, "That command cannot be used in DMs")
+    elif isinstance(error, commands.DisabledCommand):
+        pass
+    elif isinstance(error, commands.CheckFailure):
+        await bot.send_message(channel, "I'm afraid I can't do that...")
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await bot.send_message(channel, "Missing argument(s).")
+
+@bot.event
 async def on_server_join(server):
     #Log it
     log_print("[JOINED] Server: {0}."
