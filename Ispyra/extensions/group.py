@@ -10,7 +10,7 @@ class Group():
         self.channels = []
     
     ## Private channel creation
-    @commands.group(pass_context=True)
+    @commands.group(pass_context=True, no_pm=True)
     @allowed()
     async def group(self, ctx):
         """Create group channels."""

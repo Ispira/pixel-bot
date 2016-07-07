@@ -49,7 +49,7 @@ class Botmaster():
                     .format(error))
     
     ## Make the bot leave a server
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @allowed()
     @botmaster()
     async def leave(self, ctx):

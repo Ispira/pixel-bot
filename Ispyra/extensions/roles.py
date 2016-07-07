@@ -12,7 +12,7 @@ class Roles():
         #I just REALLY needed this for my server and don't feel like manually copying it
     
     ## Role management
-    @commands.group(pass_context=True)
+    @commands.group(pass_context=True, no_pm=True)
     @allowed()
     async def role(self, ctx):
         """Role related commands."""

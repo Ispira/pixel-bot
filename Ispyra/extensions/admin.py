@@ -10,7 +10,7 @@ class Admin():
         self.bot = bot
 
     ## Kick user
-    @commands.command()
+    @commands.command(no_pm=True)
     @allowed()
     @permission(kick_members=True)
     async def kick(self, member: discord.Member):
@@ -18,7 +18,7 @@ class Admin():
         await self.bot.kick(member)
     
     ## Ban user
-    @commands.command()
+    @commands.command(no_pm=True)
     @allowed()
     @permission(ban_members=True)
     async def ban(self, member: discord.Member, purge: int = 7):
@@ -26,7 +26,7 @@ class Admin():
         await self.bot.ban(member, purge)
     
     ## Unban user
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @allowed()
     async def unban(self, ctx, uid: str):
         """Unban a user by UID."""
@@ -37,7 +37,7 @@ class Admin():
         await self.bot.unban(ctx.message.server, user)
     
     ## Softban user
-    @commands.command()
+    @commands.command(no_pm=True)
     @allowed()
     @permission(ban_members=True)
     async def softban(self, member: discord.Member, purge: int = 1):
@@ -47,7 +47,7 @@ class Admin():
         await self.bot.unban(server, member)
     
     ## Mute user
-    @commands.command()
+    @commands.command(no_pm=True)
     @allowed()
     @permission(mute_members=True)
     async def mute(self, member: discord.Member, switch: bool = True):
@@ -55,7 +55,7 @@ class Admin():
         await self.bot.server_voice_state(member, mute=switch)
     
     ## Deafen user
-    @commands.command()
+    @commands.command(no_pm=True)
     @allowed()
     @permission(deafen_members=True)
     async def deafen(self, member: discord.Member, switch: bool = True):

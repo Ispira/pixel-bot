@@ -8,7 +8,7 @@ from checks import *
 
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
-bot = commands.Bot(command_prefix='|')
+bot = commands.Bot(command_prefix='|', pm_help=True)
 first_ready = True
 
 #Change the bot's avatar and name if needed
@@ -189,7 +189,7 @@ async def unload(ctx, name: str):
 ## Eval command for debugging
 #You'll need to set enabled=True for this to work
 #But don't do that
-@bot.command(pass_context=True, enabled=False)
+@bot.command(pass_context=True, hidden=True, enabled=False)
 @allowed()
 @is_owner()
 async def ev(ctx, *, code: str):
@@ -211,7 +211,7 @@ async def ev(ctx, *, code: str):
 ## Exec command because I'm a madman
 #If you enable this one you're equally as insane as I am
 #I both respect you, and fear you for that
-@bot.command(pass_context=True, enabled=False)
+@bot.command(pass_context=True, hidden=True, enabled=False)
 @allowed()
 @is_owner()
 async def ex(ctx, *, code: str):

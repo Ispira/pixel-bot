@@ -7,7 +7,7 @@ class Messages():
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @allowed()
     @permission(manage_messages=True)
     async def xpost(self, ctx, message: str, dest: discord.Channel):
@@ -16,7 +16,7 @@ class Messages():
         header = "{0} ({1}):\n".format(message.author.mention, message.channel.mention)
         await self.bot.send_message(dest, header + message.content)
     
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @allowed()
     @permission(manage_messages=True)
     async def move(self, ctx, message: str, dest: discord.Channel):

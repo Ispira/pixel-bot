@@ -67,7 +67,7 @@ class User():
         await self.bot.say("{0}\n{1}".format(title, link))
     
     ## Change a user's nickname
-    @commands.command()
+    @commands.command(no_pm=True)
     @allowed()
     @permission(manage_nicknames=True)
     async def nick(self, user: discord.Member, *, nick: str):
