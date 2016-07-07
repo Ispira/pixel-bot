@@ -1,9 +1,8 @@
-#Imgur extension v1.2.0
+#Imgur extension v1.2.1
 import random
 import asyncio
 from discord.ext import commands
 from imgurpython import ImgurClient
-from checks import allowed
 
 imgur_config = open("./extensions/imgur/config.txt").read().splitlines()
 
@@ -15,7 +14,6 @@ class Imgur():
     
     ## Imgur search
     @commands.group(pass_context=True)
-    @allowed()
     async def imgur(self, ctx):
         """Search on Imgur!"""
         #Straight from the 404

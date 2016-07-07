@@ -1,8 +1,8 @@
-#Botmaster commands v1.2.0
+#Botmaster commands v1.2.1
 from discord.ext import commands
 import discord
-from bot_globals import server_list
-from checks import allowed, botmaster, blacklist, bot_masters
+from bot_globals import server_list, bot_masters
+from checks import botmaster, blacklist
 
 class Botmaster():
     def __init__(self, bot):
@@ -10,7 +10,6 @@ class Botmaster():
     
     ## List names of currently connected servers
     @commands.command()
-    @allowed()
     @botmaster()
     async def servers(self):
         """List the names of all currently connected servers."""
@@ -21,7 +20,6 @@ class Botmaster():
     
     ## Change the bot's status
     @commands.command()
-    @allowed()
     @botmaster()
     async def playing(self, *, playing: str):
         """Change the bot's playing status."""
@@ -34,7 +32,6 @@ class Botmaster():
     
     ## Get an invite to a server the bot is connected to, if possible.
     @commands.command(pass_context=True)
-    @allowed()
     @botmaster()
     async def invite(self, ctx, *, name: str):
         """Get an invite to a server the bot is connected to, if possible."""
@@ -50,7 +47,6 @@ class Botmaster():
     
     ## Make the bot leave a server
     @commands.command(pass_context=True, no_pm=True)
-    @allowed()
     @botmaster()
     async def leave(self, ctx):
         """Leave the server where this command was received"""
@@ -59,7 +55,6 @@ class Botmaster():
     
     ## Add/remove a user from the blacklist
     @commands.group(pass_context=True)
-    @allowed()
     @botmaster()
     async def blacklist(self, ctx):
         """Add or remove a user from the blacklist"""
@@ -93,7 +88,6 @@ class Botmaster():
     
     ## Add/remove botmasters
     @commands.group(pass_context=True)
-    @allowed()
     @botmaster()
     async def botmasters(self, ctx):
         """Add or remove a botmaster"""

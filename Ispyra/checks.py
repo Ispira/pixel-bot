@@ -9,16 +9,6 @@ def owner(uid):
 def is_owner():
     return commands.check(lambda ctx: owner(ctx.message.author.id))
 
-#Check the command prefix
-#Also checks if the user is blacklisted or not
-def allowed():
-    def check(ctx):
-        if ctx.message.author.id in blacklist:
-            return False
-        else:
-            return True
-    return commands.check(check)
-
 #Check if the user is a botmaster
 def botmaster():
     return commands.check(lambda ctx: ctx.message.author.id in bot_masters)

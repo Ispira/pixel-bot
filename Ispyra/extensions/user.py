@@ -1,10 +1,10 @@
-#User commands v1.1.0
+#User commands v1.1.1
 import xkcd
 import asyncio
 import discord
 from discord.ext import commands
 from bot_globals import version, bot_masters, server_list, extensions_loaded
-from checks import allowed, permission
+from checks import permission
 
 class User():
     def __init__(self, bot):
@@ -12,14 +12,12 @@ class User():
     
     ## Apparently ping commands are hip
     @commands.command()
-    @allowed()
     async def ping(self):
         """Pong."""
         await self.bot.say("Pong.")
     
     ## Version information
     @commands.command()
-    @allowed()
     async def info(self):
         """Display information about this bot."""
         await self.bot.say("Ispyra {0} by Ispira (https://github.com/Ispira/Ispyra)"
@@ -27,7 +25,6 @@ class User():
     
     ## Bot status
     @commands.command()
-    @allowed()
     async def status(self):
         """Display bot status."""
         await self.bot.say("Servers: {0} | Botmasters: {1} | Extensions: {2}"
@@ -35,14 +32,12 @@ class User():
     
     ## Loaded extensions
     @commands.command()
-    @allowed()
     async def extensions(self):
         """List of loaded extensions."""
         await self.bot.say(" | ".join(extensions_loaded))
     
     ## XKCD!
     @commands.command()
-    @allowed()
     async def xkcd(self, number: int = None):
         """Get a comics from XKCD. Use -1 for a random comic."""
         if number is None:
@@ -68,7 +63,6 @@ class User():
     
     ## Change a user's nickname
     @commands.command(no_pm=True)
-    @allowed()
     @permission(manage_nicknames=True)
     async def nick(self, user: discord.Member, *, nick: str):
         """Change a user's nickname."""
