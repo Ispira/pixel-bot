@@ -1,7 +1,7 @@
 #Group extension v1.0.0
 from discord.ext import commands
 from discord import ChannelType
-from checks import prefix
+from checks import allowed
 import asyncio
 
 class Group():
@@ -11,7 +11,7 @@ class Group():
     
     ## Private channel creation
     @commands.group(pass_context=True)
-    @prefix('|')
+    @allowed()
     async def group(self, ctx):
         """Create group channels."""
         if ctx.invoked_subcommand is None:

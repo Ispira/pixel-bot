@@ -1,14 +1,14 @@
 #Message commands v1.0.0
 from discord.ext import commands
 import discord
-from checks import prefix, permission
+from checks import allowed, permission
 
 class Messages():
     def __init__(self, bot):
         self.bot = bot
     
     @commands.command(pass_context=True)
-    @prefix('$')
+    @allowed()
     @permission(manage_messages=True)
     async def xpost(self, ctx, message: str, dest: discord.Channel):
         """Cross-posts a message to another channel."""
@@ -17,7 +17,7 @@ class Messages():
         await self.bot.send_message(dest, header + message.content)
     
     @commands.command(pass_context=True)
-    @prefix('$')
+    @allowed()
     @permission(manage_messages=True)
     async def move(self, ctx, message: str, dest: discord.Channel):
         """Move a message to a different channel."""
@@ -27,7 +27,7 @@ class Messages():
         await self.bot.delete_message(message)
     
     @commands.group(pass_context=True)
-    @prefix('$')
+    @allowed()
     @permission(manage_messages=True)
     async def pin(self, ctx):
         """Pin or unpin a message."""

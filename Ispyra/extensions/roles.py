@@ -1,7 +1,6 @@
-#Role extensions v1.0.0
-#Yeah the code is a bit off, the whole bot is about to be rewritten.
+#Role extensions v1.1.0
 from discord.ext import commands
-from checks import prefix, permission, botmaster
+from checks import allowed, permission, botmaster
 import discord
 from discord.utils import find
 
@@ -14,7 +13,7 @@ class Roles():
     
     ## Role management
     @commands.group(pass_context=True)
-    @prefix('|')
+    @allowed()
     async def role(self, ctx):
         """Role related commands."""
         if ctx.invoked_subcommand is None:

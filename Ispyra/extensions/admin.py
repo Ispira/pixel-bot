@@ -3,7 +3,7 @@ import discord
 import asyncio
 from discord.ext import commands
 from bot_globals import display_purges, server_list
-from checks import prefix, permission
+from checks import allowed, permission
 
 class Admin():
     def __init__(self, bot):
@@ -11,7 +11,7 @@ class Admin():
 
     ## Kick user
     @commands.command()
-    @prefix('$')
+    @allowed()
     @permission(kick_members=True)
     async def kick(self, member: discord.Member):
         """Kick a user."""
@@ -19,7 +19,7 @@ class Admin():
     
     ## Ban user
     @commands.command()
-    @prefix('$')
+    @allowed()
     @permission(ban_members=True)
     async def ban(self, member: discord.Member, purge: int = 7):
         """Ban a user."""
@@ -27,7 +27,7 @@ class Admin():
     
     ## Unban user
     @commands.command(pass_context=True)
-    @prefix('$')
+    @allowed()
     async def unban(self, ctx, uid: str):
         """Unban a user by UID."""
         for banned in await self.bot.get_bans(ctx.message.server):
@@ -38,7 +38,7 @@ class Admin():
     
     ## Softban user
     @commands.command()
-    @prefix('$')
+    @allowed()
     @permission(ban_members=True)
     async def softban(self, member: discord.Member, purge: int = 1):
         """Softban (ban then unban) a user."""
@@ -48,7 +48,7 @@ class Admin():
     
     ## Mute user
     @commands.command()
-    @prefix('$')
+    @allowed()
     @permission(mute_members=True)
     async def mute(self, member: discord.Member, switch: bool = True):
         """Mute or unmute a user."""
@@ -56,7 +56,7 @@ class Admin():
     
     ## Deafen user
     @commands.command()
-    @prefix('$')
+    @allowed()
     @permission(deafen_members=True)
     async def deafen(self, member: discord.Member, switch: bool = True):
         """Deafen or undeafen a user."""
@@ -64,7 +64,7 @@ class Admin():
 
     ## Purge messages
     @commands.group(pass_context=True)
-    @prefix('$')
+    @allowed()
     @permission(manage_messages=True)
     async def purge(self, ctx):
         """Purge messages."""
@@ -104,6 +104,6 @@ class Admin():
         """Remove messages from anyone with the specified role"""
         who = role.mention
         await self.purge_messages(who, ctx.message, amt, lambda e: role in e.author.roles)
-        
+
 def setup(bot):
     bot.add_cog(Admin(bot))

@@ -6,11 +6,10 @@ from discord.ext import commands
 from bot_globals import *
 from checks import *
 
-first_ready = True
-
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
-bot = commands.Bot(command_prefix=('|', '$'))
+bot = commands.Bot(command_prefix='|')
+first_ready = True
 
 #Change the bot's avatar and name if needed
 async def update_profile():
@@ -48,9 +47,6 @@ async def on_ready():
         except Exception as error:
             exc = "{0}: {1}".format(type(error).__name__, error)
             log_print("Failed to load extension {0}, {1}".format(e, exc))
-    
-    #Set that we've done this now
-    first_ready = False
 
     #Update bot's profile
     await update_profile()
@@ -145,7 +141,7 @@ async def on_server_update(before, after):
 ## Regardless of loaded extensions
 ## Completely exit the bot
 @bot.command()
-@prefix('$')
+@allowed()
 @is_owner()
 async def quit():
     """Completely closes the bot."""
@@ -154,7 +150,7 @@ async def quit():
 
 ## Load extensions
 @bot.command(pass_context=True)
-@prefix('$')
+@allowed()
 @is_owner()
 async def load(ctx, name: str):
     """Load an extension."""
@@ -173,7 +169,7 @@ async def load(ctx, name: str):
 
 ## Unload extensions
 @bot.command(pass_context=True)
-@prefix('$')
+@allowed()
 @is_owner()
 async def unload(ctx, name: str):
     """Unload an extension."""
@@ -194,7 +190,7 @@ async def unload(ctx, name: str):
 #You'll need to set enabled=True for this to work
 #But don't do that
 @bot.command(pass_context=True, enabled=False)
-@prefix('$')
+@allowed()
 @is_owner()
 async def ev(ctx, *, code: str):
     """Extremely unsafe eval command."""
@@ -216,7 +212,7 @@ async def ev(ctx, *, code: str):
 #If you enable this one you're equally as insane as I am
 #I both respect you, and fear you for that
 @bot.command(pass_context=True, enabled=False)
-@prefix('$')
+@allowed()
 @is_owner()
 async def ex(ctx, *, code: str):
     """The death command"""
