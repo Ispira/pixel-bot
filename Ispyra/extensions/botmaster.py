@@ -2,7 +2,7 @@
 from discord.ext import commands
 import discord
 from bot_globals import server_list
-from checks import prefix, botmaster, blacklist
+from checks import prefix, botmaster, blacklist, bot_masters
 
 class Botmaster():
     def __init__(self, bot):
@@ -76,7 +76,7 @@ class Botmaster():
         uid += "\n"
         with open("./config/blacklist.txt", "a") as bl:
             bl.write(uid)
-            await self.bot.say("User blacklisted.")
+        await self.bot.say("User blacklisted.")
     
     @blacklist.command()
     async def remove(self, uid: str):
@@ -90,6 +90,40 @@ class Botmaster():
             await self.bot.say("User removed from blacklist.")
         else:
             await self.bot.say("User not in blacklist.")
+    
+    ## Add/remove botmasters
+    @commands.group(pass_context=True)
+    @prefix('$')
+    @botmaster()
+    async def botmasters(self, ctx):
+        """Add or remove a botmaster"""
+        if ctx.invoked_subcommand is None:
+            await self.bot.say(str(bot_masters))
+    
+    @botmasters.command(name="add")
+    async def _add(self, uid: str):
+        """Add a botmaster"""
+        if uid in bot_masters:
+            await self.bot.say("User is already a botmaster.")
+            return
+        bot_masters.append(uid)
+        uid += "\n"
+        with open("./config/botmasters.txt", "w") as bm:
+            bm.write(uid)
+        await self.bot.say("Botmaster added.")
+    
+    @botmasters.command(name="remove")
+    async def _remove(self, uid: str):
+        """Remove a botmaster"""
+        if uid in bot_masters:
+            bot_masters.remove(uid)
+            lines = "\n".join(bot_masters)
+            with open("./config/botmasters.txt", "w") as bm:
+                bm.write("\n")
+                bm.writelines(lines)
+            await self.bot.say("Botmaster removed.")
+        else:
+            await self.bot.say("User is not a botmaster")
 
 def setup(bot):
     bot.add_cog(Botmaster(bot))
