@@ -13,7 +13,6 @@ class Roles():
     
     ## Role management
     @commands.group(pass_context=True, no_pm=True)
-    @allowed()
     async def role(self, ctx):
         """Role related commands."""
         if ctx.invoked_subcommand is None:
