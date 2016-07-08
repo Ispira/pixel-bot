@@ -9,7 +9,6 @@ from checks import *
 #Create the logs and set up the bot
 create_log(log_folder, bot_name)
 bot = commands.Bot(command_prefix='|', pm_help=True)
-first_ready = True
 
 #Change the bot's avatar and name if needed
 async def update_profile():
@@ -36,17 +35,16 @@ async def update_profile():
 #Start up the bot
 @bot.event
 async def on_ready():
-    if not first_ready:
-        log_print("[RESUME] Bot resumed connection.")
-        return
     #Load extensions
     for e in extensions:
-        try:
-            bot.load_extension(e)
-            extensions_loaded.append(e.split('.')[1])
-        except Exception as error:
-            exc = "{0}: {1}".format(type(error).__name__, error)
-            log_print("Failed to load extension {0}, {1}".format(e, exc))
+        ext = e.split(".")[1]
+        if ext not in extensions_loaded:
+            try:
+                bot.load_extension(e)
+                extensions_loaded.append(ext)
+            except Exception as error:
+                exc = "{0}: {1}".format(type(error).__name__, error)
+                log_print("Failed to load extension {0}, {1}".format(e, exc))
 
     #Update bot's profile
     await update_profile()
@@ -72,8 +70,9 @@ async def on_ready():
     
     log_print("Connected to:") 
     for serv in bot.servers:
-        log_print("{0},".format(serv.name))
-        server_list.append(serv)
+        if serv not in server_list:
+            log_print("{0},".format(serv.name))
+            server_list.append(serv)
     
     log_print("------------------------STATUS------------------------")
 
@@ -82,7 +81,7 @@ async def on_ready():
 async def on_message(message):
     #Log the message unless the config says otherwise
     if log_messages:
-        log_print("|{0}|[{1}]<{2}>: {3}"
+        log_print("[{0}] - #{1} <{2}>: {3}"
         .format(message.server, message.channel, message.author, message.content))    
     
     #Don't let the bot do anything with itself
@@ -104,6 +103,18 @@ async def on_command(command, ctx):
     if log_commands:
         log_print("Command `{0.content}` issued by `{0.author}` in: {1}"
         .format(ctx.message, destination))
+
+@bot.event
+async def on_command_error(error, ctx):
+    channel = ctx.message.channel
+    if isinstance(error, commands.NoPrivateMessage):
+        await bot.send_message(channel, "That command cannot be used in DMs")
+    elif isinstance(error, commands.DisabledCommand):
+        pass
+    elif isinstance(error, commands.CheckFailure):
+        await bot.send_message(channel, "I'm afraid I can't do that...")
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await bot.send_message(channel, "Missing argument(s).")
 
 @bot.event
 async def on_server_join(server):
@@ -136,12 +147,16 @@ async def on_server_update(before, after):
         server_list.remove(before)
         server_list.append(after)
 
+#Global blacklist check
+def allowed(ctx):
+    return ctx.message.author.id not in blacklist
+bot.add_check(allowed)
+
 ## COMMANDS ##
 ## These are considered "Base" commands that will always work
 ## Regardless of loaded extensions
 ## Completely exit the bot
 @bot.command()
-@allowed()
 @is_owner()
 async def quit():
     """Completely closes the bot."""
@@ -150,7 +165,6 @@ async def quit():
 
 ## Load extensions
 @bot.command(pass_context=True)
-@allowed()
 @is_owner()
 async def load(ctx, name: str):
     """Load an extension."""
@@ -169,7 +183,6 @@ async def load(ctx, name: str):
 
 ## Unload extensions
 @bot.command(pass_context=True)
-@allowed()
 @is_owner()
 async def unload(ctx, name: str):
     """Unload an extension."""
@@ -190,7 +203,6 @@ async def unload(ctx, name: str):
 #You'll need to set enabled=True for this to work
 #But don't do that
 @bot.command(pass_context=True, hidden=True, enabled=False)
-@allowed()
 @is_owner()
 async def ev(ctx, *, code: str):
     """Extremely unsafe eval command."""
@@ -212,7 +224,6 @@ async def ev(ctx, *, code: str):
 #If you enable this one you're equally as insane as I am
 #I both respect you, and fear you for that
 @bot.command(pass_context=True, hidden=True, enabled=False)
-@allowed()
 @is_owner()
 async def ex(ctx, *, code: str):
     """The death command"""

@@ -1,6 +1,6 @@
-#Role extensions v1.1.0
+#Role extensions v1.1.1
 from discord.ext import commands
-from checks import allowed, permission, botmaster
+from checks import permission, botmaster
 import discord
 from discord.utils import find
 

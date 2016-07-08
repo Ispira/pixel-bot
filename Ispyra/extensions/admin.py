@@ -1,9 +1,9 @@
-#Admin commands v2.1.2
+#Admin commands v2.1.3
 import discord
 import asyncio
 from discord.ext import commands
 from bot_globals import display_purges, server_list
-from checks import allowed, permission
+from checks import permission
 
 class Admin():
     def __init__(self, bot):
@@ -11,7 +11,6 @@ class Admin():
 
     ## Kick user
     @commands.command(no_pm=True)
-    @allowed()
     @permission(kick_members=True)
     async def kick(self, member: discord.Member):
         """Kick a user."""
@@ -19,7 +18,6 @@ class Admin():
     
     ## Ban user
     @commands.command(no_pm=True)
-    @allowed()
     @permission(ban_members=True)
     async def ban(self, member: discord.Member, purge: int = 7):
         """Ban a user."""
@@ -27,7 +25,6 @@ class Admin():
     
     ## Unban user
     @commands.command(pass_context=True, no_pm=True)
-    @allowed()
     async def unban(self, ctx, uid: str):
         """Unban a user by UID."""
         for banned in await self.bot.get_bans(ctx.message.server):
@@ -38,7 +35,6 @@ class Admin():
     
     ## Softban user
     @commands.command(no_pm=True)
-    @allowed()
     @permission(ban_members=True)
     async def softban(self, member: discord.Member, purge: int = 1):
         """Softban (ban then unban) a user."""
@@ -48,7 +44,6 @@ class Admin():
     
     ## Mute user
     @commands.command(no_pm=True)
-    @allowed()
     @permission(mute_members=True)
     async def mute(self, member: discord.Member, switch: bool = True):
         """Mute or unmute a user."""
@@ -56,7 +51,6 @@ class Admin():
     
     ## Deafen user
     @commands.command(no_pm=True)
-    @allowed()
     @permission(deafen_members=True)
     async def deafen(self, member: discord.Member, switch: bool = True):
         """Deafen or undeafen a user."""
@@ -64,7 +58,6 @@ class Admin():
 
     ## Purge messages
     @commands.group(pass_context=True)
-    @allowed()
     @permission(manage_messages=True)
     async def purge(self, ctx):
         """Purge messages."""
