@@ -19,3 +19,4 @@ be made to make installation or setup easier. This bot uses dev builds of discor
 - Edit `config/config.json` with the appropriate info and settings
 - Launch the bot via `python bot.py` or `python3 bot.py` depending on your system
   - If the bot can't create folders or files it'll complain because it needs to do that
+  - If you're on windows run the command `chcp 65001` before starting the bot else you'll get errors for days
