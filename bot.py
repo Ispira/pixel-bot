@@ -97,7 +97,7 @@ async def on_command_error(err, ctx):
     elif isinstance(err, c.CheckFailure):
         await bot.send_message(channel, "I'm sorry, I'm afraid I can't do that.")
     elif isinstance(err, c.MissingRequiredArgument):
-        await bot.send_message(channel, "Missing or invalid argument(s).")
+        await bot.send_message(channel, "Missing argument(s).")
     elif isinstance(err, c.DisabledCommand):
         pass
 
