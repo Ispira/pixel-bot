@@ -8,14 +8,15 @@ import discord
 from io import StringIO
 from datetime import datetime
 from discord.ext import commands as c
+from accounts import level
 
 # Assorted things
 date = datetime.now()
 
 # Get the configs
-with open("config/config.json") as js:
-    config = json.load(js)
-with open("config/blacklist.json") as bl:
+with open("config/config.json") as cfg:
+    config = json.load(cfg)
+with open("db/blacklist.json") as bl:
     blacklist = json.load(bl)
 
 # Set up the config values
@@ -60,6 +61,9 @@ async def on_ready():
                 log.warning("Invalid image file for bot_avatar.")
             except discord.HTTPException as error:
                 log.warning(f"Unabled to update bot profile: {error}")
+    
+    # Load the account commands
+    bot.load_extension("accounts")
 
     # Status header
     log.info("------------------------STATUS------------------------")
@@ -93,7 +97,7 @@ async def on_command_error(err, ctx):
     elif isinstance(err, c.CheckFailure):
         await bot.send_message(channel, "I'm sorry, I'm afraid I can't do that.")
     elif isinstance(err, c.MissingRequiredArgument):
-        await bot.send_message(channel, "Incorrect argument(s).")
+        await bot.send_message(channel, "Missing or invalid argument(s).")
     elif isinstance(err, c.DisabledCommand):
         pass
 
@@ -124,7 +128,7 @@ async def quit_bot():
 
 @bot.group(pass_context=True)
 async def plugin(ctx):
-    """Plugin functions."""
+    """List loaded plugins."""
     if ctx.invoked_subcommand is None:
         await bot.say(" | ".join(plugins))
 
