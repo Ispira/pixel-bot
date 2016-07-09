@@ -1,0 +1,8 @@
+{
+    "token": "bot_token_here",
+    "bot_name": "Ispyra",
+    "bot_avatar": "avatar.png",
+    "command_prefix": "|",
+    "log_file": "ispyra.log",
+    "version": "2.0.0"
+}
