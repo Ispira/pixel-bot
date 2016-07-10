@@ -51,6 +51,9 @@ class Accounts:
     @level(3)
     async def account_add(self, uid: str, level: int):
         """Add an account."""
+        if uid in accounts:
+            await self.bot.say("\U00002754 Account already exists.")
+            return
         accounts[uid] = {}
         accounts[uid]["level"] = level
         with open("db/accounts.json", "w") as accs:
