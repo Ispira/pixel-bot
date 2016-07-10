@@ -16,9 +16,9 @@ with open("db/accounts.json") as accs:
     accounts = json.load(accs)
 
 # Helper function for updating database
-def update_db():
+def update_db(db):
     with open("db/accounts.json", "w") as accs:
-        json.dump(accounts, accs, indent=4)
+        json.dump(db, accs, indent=4)
 
 def level(required=0):
     def check(ctx):
@@ -61,7 +61,7 @@ class Accounts:
             return
         accounts[uid] = {}
         accounts[uid]["level"] = level
-        update_db()
+        update_db(accounts)
         await self.bot.say("\U00002705")
     
     @account.command(name="remove")
@@ -72,7 +72,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No account with ID {uid} exists.")
             return
         del accounts[uid]
-        update_db()
+        update_db(accounts)
         await self.bot.say("\U00002705")
     
     @account.command(name="update")
@@ -83,7 +83,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
         accounts[uid]["level"] = level
-        update_db()
+        update_db(accounts)
         await self.bot.say("\U00002705")
 
 def setup(bot):
