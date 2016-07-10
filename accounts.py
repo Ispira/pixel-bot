@@ -33,8 +33,8 @@ class Accounts:
     def __init__(self, bot):
         self.bot = bot
     
-    @c.group(name="account", pass_context=True)
-    async def account_command(self, ctx):
+    @c.group(pass_context=True)
+    async def account(self, ctx):
         """Add/remove/update accounts.
         
         Running the command without arguments will display your current account level.
@@ -46,8 +46,8 @@ class Accounts:
             else:
                 await self.bot.say("You do not have an account.")
     
-    @account_command.command(name="add")
-    @level(2)
+    @account.command(name="add")
+    @level(3)
     async def account_add(self, uid: str, lvl: int):
         """Add an account."""
         accounts[uid] = {}
@@ -57,8 +57,8 @@ class Accounts:
         
         await self.bot.say("Account added.")
     
-    @account_command.command(name="remove")
-    @level(2)
+    @account.command(name="remove")
+    @level(3)
     async def account_remove(self, uid: str):
         """Remove an acconut."""
         if uid not in accounts:
@@ -71,8 +71,8 @@ class Accounts:
         
         await self.bot.say("Account removed.")
     
-    @account_command.command(name="update")
-    @level(2)
+    @account.command(name="update")
+    @level(3)
     async def account_update(self, uid: str, lvl: int):
         """Update an account."""
         if uid not in accounts:
