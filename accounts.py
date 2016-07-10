@@ -15,6 +15,11 @@ with open("config/config.json") as cfg:
 with open("db/accounts.json") as accs:
     accounts = json.load(accs)
 
+# Helper function for updating database
+def update_db():
+    with open("db/accounts.json", "w") as accs:
+        json.dump(accounts, accs, indent=4)
+
 def level(required=0):
     def check(ctx):
         uid = ctx.message.author.id
@@ -56,9 +61,7 @@ class Accounts:
             return
         accounts[uid] = {}
         accounts[uid]["level"] = level
-        with open("db/accounts.json", "w") as accs:
-            json.dump(accounts, accs, indent=4)
-        
+        update_db()
         await self.bot.say("\U00002705")
     
     @account.command(name="remove")
@@ -68,11 +71,8 @@ class Accounts:
         if uid not in accounts:
             await self.bot.say(f"\U00002754 No account with ID {uid} exists.")
             return
-        
         del accounts[uid]
-        with open("db/accounts.json", "w") as accs:
-            json.dump(accounts, accs, indent=4)
-        
+        update_db()
         await self.bot.say("\U00002705")
     
     @account.command(name="update")
@@ -82,11 +82,8 @@ class Accounts:
         if uid not in accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
-        
         accounts[uid]["level"] = level
-        with open("db/accounts.json", "w") as accs:
-            json.dump(accounts, accs, indent=4)
-        
+        update_db()
         await self.bot.say("\U00002705")
 
 def setup(bot):
