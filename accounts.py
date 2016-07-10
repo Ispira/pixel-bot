@@ -48,10 +48,10 @@ class Accounts:
     
     @account.command(name="add")
     @level(3)
-    async def account_add(self, uid: str, lvl: int):
+    async def account_add(self, uid: str, level: int):
         """Add an account."""
         accounts[uid] = {}
-        accounts[uid]["level"] = lvl
+        accounts[uid]["level"] = level
         with open("db/accounts.json", "w") as accs:
             json.dump(accounts, accs, indent=4)
         
@@ -73,13 +73,13 @@ class Accounts:
     
     @account.command(name="update")
     @level(3)
-    async def account_update(self, uid: str, lvl: int):
+    async def account_update(self, uid: str, level: int):
         """Update an account."""
         if uid not in accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
         
-        accounts[uid]["level"] = lvl
+        accounts[uid]["level"] = level
         with open("db/accounts.json", "w") as accs:
             json.dump(accounts, accs, indent=4)
         
