@@ -35,13 +35,16 @@ class Accounts:
     
     @c.group(name="account", pass_context=True)
     async def account_command(self, ctx):
-        """Check your account level."""
+        """Add/remove/update accounts.
+        
+        Running the command without arguments will display your current account level.
+        """
         if ctx.invoked_subcommand is None:
             uid = ctx.message.author.id
             if uid in accounts:
                 await self.bot.say("Account level is: {0}".format(accounts[uid]["level"]))
             else:
-                await self.bot.say(f"No account with ID {uid} exists.")
+                await self.bot.say("You do not have an account.")
     
     @account_command.command(name="add")
     @level(2)
