@@ -44,7 +44,7 @@ class Accounts:
             if uid in accounts:
                 await self.bot.say("Account level is: {0}".format(accounts[uid]["level"]))
             else:
-                await self.bot.say("You do not have an account.")
+                await self.bot.say("\U00002754 You do not have an account.")
     
     @account.command(name="add")
     @level(3)
@@ -55,35 +55,35 @@ class Accounts:
         with open("db/accounts.json", "w") as accs:
             json.dump(accounts, accs, indent=4)
         
-        await self.bot.say("Account added.")
+        await self.bot.say("\U00002705")
     
     @account.command(name="remove")
     @level(3)
     async def account_remove(self, uid: str):
         """Remove an acconut."""
         if uid not in accounts:
-            await self.bot.say(f"No account with ID {uid} exists.")
+            await self.bot.say(f"\U00002754 No account with ID {uid} exists.")
             return
         
         del accounts[uid]
         with open("db/accounts.json", "w") as accs:
             json.dump(accounts, accs, indent=4)
         
-        await self.bot.say("Account removed.")
+        await self.bot.say("\U00002705")
     
     @account.command(name="update")
     @level(3)
     async def account_update(self, uid: str, lvl: int):
         """Update an account."""
         if uid not in accounts:
-            await self.bot.say(f"No accounts with ID {uid} exists.")
+            await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
         
         accounts[uid]["level"] = lvl
         with open("db/accounts.json", "w") as accs:
             json.dump(accounts, accs, indent=4)
         
-        await self.bot.say("Account updated.")
+        await self.bot.say("\U00002705")
 
 def setup(bot):
     bot.add_cog(Accounts(bot))

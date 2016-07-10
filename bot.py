@@ -17,7 +17,7 @@ date = datetime.now()
 with open("config/config.json") as cfg:
     config = json.load(cfg)
 with open("db/blacklist.json") as bl:
-    blacklist = json.load(bl)
+    blacklist = json.load(bl)["users"]
 
 # Set up the config values
 owner        = config["owner"]
@@ -93,11 +93,14 @@ async def on_command(cmd, ctx):
 async def on_command_error(err, ctx):
     channel = ctx.message.channel
     if isinstance(err, c.NoPrivateMessage):
-        await bot.send_message(channel, "This command is not available in DMs.")
+        await bot.send_message(channel,
+            "\U000026A0 This command is not available in DMs.")
     elif isinstance(err, c.CheckFailure):
-        await bot.send_message(channel, "I'm sorry, I'm afraid I can't do that.")
+        await bot.send_message(channel,
+            "\U0001F6AB I'm sorry, I'm afraid I can't do that.")
     elif isinstance(err, c.MissingRequiredArgument):
-        await bot.send_message(channel, "Missing argument(s).")
+        await bot.send_message(channel,
+            "\U00002754 Missing argument(s).")
     elif isinstance(err, c.DisabledCommand):
         pass
 
@@ -112,7 +115,7 @@ async def on_server_remove(srv):
 # Global check for all commands
 @bot.check
 def allowed(ctx):
-    return ctx.message.author.id not in blacklist["users"]
+    return ctx.message.author.id not in blacklist
 # Built-in check for the bot's owner
 def is_owner():
     return c.check(lambda ctx: ctx.message.author.id == owner)
@@ -123,7 +126,7 @@ def is_owner():
 @is_owner()
 async def quit_bot():
     """Shut the bot down."""
-    await bot.say("Shutting down.")
+    await bot.say("Shutting down...\n\U0001f44b")
     await bot.logout()
 
 @bot.group(pass_context=True)
@@ -137,40 +140,39 @@ async def plugin(ctx):
 async def plugin_load(name: str):
     """Load a plugin."""
     if name in plugins:
-        await bot.say(f"Plugin {name} is already loaded.")
+        await bot.say(f"\U000026A0 Plugin {name} is already loaded.")
         return
     
     if not os.path.isfile(f"plugins/{name}.py"):
-        await bot.say(f"No plugin {name} exists.")
+        await bot.say(f"\U00002754 No plugin {name} exists.")
         return
     
     try:
         bot.load_extension(f"plugins.{name}")
         plugins.append(name)
-        await bot.say(f"Plugin {name} loaded.")
+        await bot.say(f"\U00002705 Plugin {name} loaded.")
     except:
-        await bot.say(f"Error loading {name}.")
+        await bot.say(f"\U00002757 Error loading {name}.")
 
 @plugin.command(name="unload")
 @is_owner()
 async def plugin_unload(name: str):
     """Unload a plugin."""
     if name not in plugins:
-        await bot.say(f"Plugin {name} is not loaded.")
+        await bot.say(f"\U000026A0 Plugin {name} is not loaded.")
         return
     
     try:
         bot.unload_extension(f"plugins.{name}")
         plugins.remove(name)
-        await bot.say(f"Plugin {name} unloaded.")
+        await bot.say(f"\U00002705 Plugin {name} unloaded.")
     except:
-        await bot.say(f"Error unloading {name}.")
+        await bot.say(f"\U00002757 Error unloading {name}.")
 
 @bot.command(name="eval", hidden=True, pass_context=True, enabled=False)
 @is_owner()
 async def evaluate(ctx, *, code: str):
     """Extremely unsafe eval command."""
-    python = "```py\n{0}\n```"
     code = code.strip("` ")
     result = None
     try:
@@ -181,7 +183,7 @@ async def evaluate(ctx, *, code: str):
         await bot.say(python.format(type(err).__name__ + ": " + str(error)))
         return
     
-    await bot.say(python.format(result))
+    await bot.say(f"```py\n{result}\n```")
 
 @bot.command(name="exec", hidden=True, pass_context=True, enabled=False)
 @is_owner()

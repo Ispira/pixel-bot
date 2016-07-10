@@ -29,7 +29,7 @@ class Admin:
     async def kick(self, ctx, member: discord.Member, *, reason: str = ""):
         """Kick a member."""
         await self.bot.kick(member)
-        await self.bot.say("\u2705")
+        await self.bot.say("\U00002705")
         await self.log_to_channel(ctx.message.author, member, "KICK", reason)
     
     @c.command(no_pm=True, pass_context=True)
@@ -37,8 +37,8 @@ class Admin:
     async def ban(self, ctx, member: discord.Member, purge: int = 7, *, reason: str = ""):
         """Ban a member."""
         await self.bot.ban(member, purge)
-        await self.bot.say("\u2705")
-        await self.log_to_channel(ctx.message.author, member, "BAN", reason)
+        await self.bot.say("\U00002705")
+        await self.log_to_channel(ctx.message.author, member, "\U0001F528BAN\U0001F528", reason)
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
@@ -49,7 +49,7 @@ class Admin:
                 user = banned
                 break
         await self.bot.unban(ctx.message.server, user)
-        await self.bot.say("\u2705")
+        await self.bot.say("\U00002705")
         await self.log_to_channel(ctx.message.author, user, "UNBAN", reason)
     
     @c.command(no_pm=True, pass_context=True)
@@ -58,22 +58,22 @@ class Admin:
         """Softban (ban then unban) a member."""
         await self.bot.ban(member, purge)
         await self.bot.unban(member.server, member)
-        await self.bot.say("\u2705")
-        await self.log_to_channel(ctx.message.author, member, "SOFTBAN", reason)
+        await self.bot.say("\U00002705")
+        await self.log_to_channel(ctx.message.author, member, "\U0001F528SOFTBAN\U0001F528", reason)
     
     @c.command(no_pm=True)
     @level(2)
     async def mute(self, member: discord.Member, switch: bool = True):
         """Mute or unmute a member."""
         await self.bot.server_voice_state(member, mute=switch)
-        await self.bot.say("\u2705")
+        await self.bot.say("\U00002705")
     
     @c.command(no_pm=True)
     @level(2)
     async def deafen(self, member: discord.Member, switch: bool = True):
         """Deafen or undeafen a member."""
         await self.bot.server_voice_state(member, deafen=switch)
-        await self.bot.say("\u2705")
+        await self.bot.say("\U00002705")
     
     # Message purging helper function
     async def purge_messages(self, location, message, limit, check):
@@ -81,7 +81,7 @@ class Admin:
             before=message, check=check)
         # Display information about the purge
         if self.display_purges:
-            await self.bot.say("\u2705\n{0} message(s) purged from {1}."
+            await self.bot.say("\U00002705 {0} message(s) purged from {1}."
                 .format(len(removed), location))
 
     @c.group(pass_context=True)
@@ -89,7 +89,7 @@ class Admin:
     async def purge(self, ctx):
         """Purge messages."""
         if ctx.invoked_subcommand is None:
-            await self.bot.say("What should be purged?")
+            await self.bot.say("\U00002754 What should be purged?")
     
     @purge.command(name="all", aliases=["everyone", pass_context=True)
     async def purge_all(self, ctx, amount: int):
