@@ -1,7 +1,7 @@
 import asyncio
 import json
-import discord
 
+from discord import Member, Role
 from discord.ext import commands as c
 from accounts import level
 
@@ -26,7 +26,7 @@ class Admin:
 
     @c.command(no_pm=True, pass_context=True)
     @level(2)
-    async def kick(self, ctx, member: discord.Member, *, reason: str = ""):
+    async def kick(self, ctx, member: Member, *, reason: str = ""):
         """Kick a member."""
         await self.bot.kick(member)
         await self.bot.say("\U00002705")
@@ -34,7 +34,7 @@ class Admin:
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
-    async def ban(self, ctx, member: discord.Member,
+    async def ban(self, ctx, member: Member,
         purge: int = 7, *, reason: str = ""):
         """Ban a member."""
         await self.bot.ban(member, purge)
@@ -56,7 +56,7 @@ class Admin:
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
-    async def softban(self, ctx, member: discord.Member,
+    async def softban(self, ctx, member: Member,
         purge: int = 1, *, reason: str = ""):
         """Softban (ban then unban) a member."""
         await self.bot.ban(member, purge)
@@ -67,14 +67,14 @@ class Admin:
     
     @c.command(no_pm=True)
     @level(2)
-    async def mute(self, member: discord.Member, switch: bool = True):
+    async def mute(self, member: Member, switch: bool = True):
         """Mute or unmute a member."""
         await self.bot.server_voice_state(member, mute=switch)
         await self.bot.say("\U00002705")
     
     @c.command(no_pm=True)
     @level(2)
-    async def deafen(self, member: discord.Member, switch: bool = True):
+    async def deafen(self, member: Member, switch: bool = True):
         """Deafen or undeafen a member."""
         await self.bot.server_voice_state(member, deafen=switch)
         await self.bot.say("\U00002705")
@@ -102,7 +102,7 @@ class Admin:
             lambda m: m is not None)
 
     @purge.command(name="user", aliases=[]"member"], pass_context=True)
-    async def purge_member(self, ctx, member: discord.Member, amount: int):
+    async def purge_member(self, ctx, member: Member, amount: int):
         """Purge messages from a member."""
         await self.purge_messages(f"{member.mention}", ctx.message, amount,
             lambda m: m.author.id == member.id)
@@ -114,7 +114,7 @@ class Admin:
             lambda m: m.author.id == uid)
     
     @purge.command(name="role", aliases=["group"], pass_context=True)
-    async def purge_role(self, ctx, role: discord.Role, amount: int):
+    async def purge_role(self, ctx, role: Role, amount: int):
         """Purge messages from a role."""
         await self.purge_messages(f"{role.name}", ctx.message, amount,
             lambda m: role in m.author.roles)

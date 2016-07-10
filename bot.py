@@ -3,10 +3,10 @@ import os
 import asyncio
 import logging
 import json
-import discord
 
 from io import StringIO
 from datetime import datetime
+from discord import InvalidArgument, HTTPException
 from discord.ext import commands as c
 from accounts import level
 
@@ -57,9 +57,9 @@ async def on_ready():
             try:
                 await bot.edit_profile(username=bot_name, avatar=avatar.read())
                 log.info("Bot profile updated.")
-            except discord.InvalidArgument:
+            except InvalidArgument:
                 log.warning("Invalid image file for bot_avatar.")
-            except discord.HTTPException as error:
+            except HTTPException as error:
                 log.warning(f"Unabled to update bot profile: {error}")
     
     # Load the account commands
