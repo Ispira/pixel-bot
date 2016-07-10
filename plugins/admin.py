@@ -95,13 +95,13 @@ class Admin:
         if ctx.invoked_subcommand is None:
             await self.bot.say("\U00002754 What should be purged?")
     
-    @purge.command(name="all", aliases=["everyone", pass_context=True)
+    @purge.command(name="all", aliases=["everyone"], pass_context=True)
     async def purge_all(self, ctx, amount: int):
         """Purge messages from everyone."""
         await self.purge_messages("everyone", ctx.message, amount,
             lambda m: m is not None)
 
-    @purge.command(name="user", aliases=[]"member"], pass_context=True)
+    @purge.command(name="user", aliases=["member"], pass_context=True)
     async def purge_member(self, ctx, member: Member, amount: int):
         """Purge messages from a member."""
         await self.purge_messages(f"{member.mention}", ctx.message, amount,
