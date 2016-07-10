@@ -42,7 +42,8 @@ class Accounts:
         if ctx.invoked_subcommand is None:
             uid = ctx.message.author.id
             if uid in accounts:
-                await self.bot.say("Account level is: {0}".format(accounts[uid]["level"]))
+                await self.bot.say("Account level is: {0}"
+                    .format(accounts[uid]["level"]))
             else:
                 await self.bot.say("\U00002754 You do not have an account.")
     

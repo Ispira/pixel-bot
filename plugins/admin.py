@@ -34,11 +34,13 @@ class Admin:
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
-    async def ban(self, ctx, member: discord.Member, purge: int = 7, *, reason: str = ""):
+    async def ban(self, ctx, member: discord.Member,
+        purge: int = 7, *, reason: str = ""):
         """Ban a member."""
         await self.bot.ban(member, purge)
         await self.bot.say("\U00002705")
-        await self.log_to_channel(ctx.message.author, member, "\U0001F528BAN\U0001F528", reason)
+        await self.log_to_channel(ctx.message.author, member,
+            "\U0001F528BAN\U0001F528", reason)
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
@@ -54,12 +56,14 @@ class Admin:
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
-    async def softban(self, ctx, member: discord.Member, purge: int = 1, *, reason: str = ""):
+    async def softban(self, ctx, member: discord.Member,
+        purge: int = 1, *, reason: str = ""):
         """Softban (ban then unban) a member."""
         await self.bot.ban(member, purge)
         await self.bot.unban(member.server, member)
         await self.bot.say("\U00002705")
-        await self.log_to_channel(ctx.message.author, member, "\U0001F528SOFTBAN\U0001F528", reason)
+        await self.log_to_channel(ctx.message.author, member,
+            "\U0001F528SOFTBAN\U0001F528", reason)
     
     @c.command(no_pm=True)
     @level(2)
