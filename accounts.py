@@ -44,7 +44,7 @@ class Accounts:
     def __init__(self, bot):
         self.bot = bot
     
-    @c.group(pass_context=True)
+    @c.group(aliases=["accounts"], pass_context=True)
     async def account(self, ctx):
         """Add/remove/update accounts.
         
@@ -57,6 +57,19 @@ class Accounts:
                     .format(accounts[uid]["level"]))
             else:
                 await self.bot.say("\U00002754 You do not have an account.")
+    
+    @account.command(name="search", aliases=["lookup"], pass_context=True)
+    async def account_search(self, ctx, uid: str):
+        """Look up an account based on useer ID."""
+        member = ctx.message.server.get_member(uid)
+        if member is None:
+            await self.bot.say("\U00002757 User not in this server.")
+            return
+        if member.id in accounts:
+            level = accounts[member.id]["level"]
+            await self.bot.say(f"{member.name} is level {level}.")
+        else:
+            await self.bot.say(f"{member.name} doesn't have an account.")
     
     @account.command(name="add")
     @level(3)
