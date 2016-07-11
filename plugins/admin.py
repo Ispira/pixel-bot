@@ -66,14 +66,14 @@ class Admin:
             "\U0001F528SOFTBAN\U0001F528", reason)
     
     @c.command(no_pm=True)
-    @level(2)
+    @level(1)
     async def mute(self, member: Member, switch: bool = True):
         """Mute or unmute a member."""
         await self.bot.server_voice_state(member, mute=switch)
         await self.bot.say("\U00002705")
     
     @c.command(no_pm=True)
-    @level(2)
+    @level(1)
     async def deafen(self, member: Member, switch: bool = True):
         """Deafen or undeafen a member."""
         await self.bot.server_voice_state(member, deafen=switch)
