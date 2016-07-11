@@ -10,9 +10,10 @@ from discord import Game, InvalidArgument, HTTPException
 from discord.ext import commands as c
 from accounts import level
 
-# Get the configs
+# Get the config and database
 with open("config/config.json") as cfg:
     config = json.load(cfg)
+
 with open("db/blacklist.json") as bl:
     blacklist = json.load(bl)["users"]
 
@@ -132,6 +133,7 @@ async def on_server_remove(srv):
 @bot.check
 def allowed(ctx):
     return ctx.message.author.id not in blacklist
+
 # Built-in check for the bot's owner
 def is_owner():
     return c.check(lambda ctx: ctx.message.author.id == owner)
