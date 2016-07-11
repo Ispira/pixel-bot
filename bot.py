@@ -6,7 +6,7 @@ import json
 
 from io import StringIO
 from datetime import datetime
-from discord import InvalidArgument, HTTPException
+from discord import Game, InvalidArgument, HTTPException
 from discord.ext import commands as c
 from accounts import level
 
@@ -140,10 +140,32 @@ def is_owner():
 # Step the bot
 @bot.command(name="quit")
 @is_owner()
-async def quit_bot():
+async def bot_quit():
     """Shut the bot down."""
     await bot.say("Shutting down...\n\U0001f44b")
     await bot.logout()
+
+@bot.command(name="info")
+async def bot_info():
+    """Display information about the bot."""
+    await bot.say("Ispyra {version} (https://github.com/Ispira/Ispyra)")
+
+@bot.command(name="status", aliases=["playing"])
+async def bot_status(*, status: str):
+    """Change the bot's 'playing' status.
+    
+    If the status is set to '!none' it will be disabled.
+    """
+    if status.lower() == "!none":
+        game = None
+    else:
+        game = Game(name=status)
+    await bot.change_status(game=game)
+    await bot.say("\U00002705")
+
+@bot.command()
+async def ping():
+    await bot.say("Pong!")
 
 @bot.group(aliases=["plugins", "pl"], pass_context=True)
 async def plugin(ctx):
