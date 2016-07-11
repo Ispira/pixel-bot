@@ -40,6 +40,7 @@ class Imgur:
             await self.bot.say(image.get("link", None))
         else:
             await self.bot.say(random.choice(image).link)
+
     @imgur.command(name="sub", aliases=["subreddit", "reddit", "r/"])
     async def imgur_subreddit(self, subreddit: str):
         """Get an image from a subreddit."""
