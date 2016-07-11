@@ -86,8 +86,8 @@ class Admin:
             before=message, check=check)
         # Display information about the purge
         if self.display_purges:
-            await self.bot.say("\U00002705 {0} message(s) purged from {1}."
-                .format(len(removed), location))
+            amount = len(removed)
+            await self.bot.say(f"\U00002705 {amount} message(s) purged from {location}.")
 
     @c.group(pass_context=True)
     @level(1)
