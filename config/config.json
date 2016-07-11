@@ -1,0 +1,11 @@
+{
+    "owner": "your_uid_here",
+    "token": "bot_token_here",
+    "bot_name": "Ispyra",
+    "bot_avatar": "avatar.png",
+    "command_prefix": "|",
+    "log_file": "ispyra.log",
+    "log_messages": true,
+    "log_commands": true,
+    "version": "2.0.0"
+}
