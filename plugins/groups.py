@@ -53,8 +53,8 @@ class Groups:
             await clear_channels(self.bot, ctx.message.channel)
             await self.bot.say("\U00002705 Cleared empty channels.")
     
-    @group.command(pass_context=True)
-    async def create(self, ctx, *, name: str = None):
+    @group.command(name="create", pass_context=True)
+    async def group_create(self, ctx, *, name: str = None):
         """Create a group channel."""
         if name is None:
             name = ctx.message.author.discriminator
