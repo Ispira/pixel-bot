@@ -145,7 +145,7 @@ async def quit_bot():
     await bot.say("Shutting down...\n\U0001f44b")
     await bot.logout()
 
-@bot.group(pass_context=True)
+@bot.group(aliases=["plugins", "pl"], pass_context=True)
 async def plugin(ctx):
     """List loaded plugins."""
     if ctx.invoked_subcommand is None:
