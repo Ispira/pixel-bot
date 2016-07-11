@@ -10,9 +10,6 @@ from discord import InvalidArgument, HTTPException
 from discord.ext import commands as c
 from accounts import level
 
-# Assorted things
-date = datetime.now()
-
 # Get the configs
 with open("config/config.json") as cfg:
     config = json.load(cfg)
@@ -31,6 +28,7 @@ log_commands = config["log_commands"]
 version      = config["version"]
 
 # Set up logging
+date = datetime.now()
 timestamp = "{0.year}-{0.month}-{0.day}_{0.hour}-{0.minute}-{0.second}".format(date)
 log_file = f"logs/{timestamp}_{log_file}"
 if not os.path.exists("logs"):
@@ -41,17 +39,34 @@ log.setLevel(logging.INFO)
 log.addHandler(logging.FileHandler(filename=log_file, encoding="utf-8"))
 log.addHandler(logging.StreamHandler(sys.stdout))
 
-# Set the bot up
+# Set the bot and basic variables up
 description="""
 General purpose chat and administration bot.
 """
 bot = c.Bot(c.when_mentioned_or(prefix), pm_help=True, description=description)
 plugins = []
+first_launch = True
+
+# Helper function to load plugins
+def load_plugins():
+    for p in os.listdir("plugins"):
+        if p.endswith(".py"):
+            p = p.rstrip(".py")
+            try:
+                bot.load_extension(f'plugins.{p}')
+                plugins.append(p)
+            except Exception as error:
+                exc = "{0}: {1}".format(type(error).__name__, error)
+                log.warning(f"Failed to load plugin {p}:\n    {exc}")
+    first_launch = False
 
 # Events
 @bot.event
 async def on_ready():
     # Set the bot's name and avatar
+    if first_launch:
+        load_plugins()
+
     if os.path.isfile(f"logs/{bot_avatar}"):
         with open(bot_avatar, "rb") as avatar:
             try:
