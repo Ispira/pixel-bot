@@ -166,8 +166,9 @@ async def plugin_load(name: str):
         bot.load_extension(f"plugins.{name}")
         plugins.append(name)
         await bot.say(f"\U00002705 Plugin {name} loaded.")
-    except:
-        await bot.say(f"\U00002757 Error loading {name}.")
+    except Exception as error:
+        exc = "{0}: {1}".format(type(error).__name__, error)
+        await bot.say(f"\U00002757 Error loading {name}.\n```py\n{exc}\n```")
 
 @plugin.command(name="unload")
 @is_owner()
