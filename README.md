@@ -20,8 +20,11 @@ be made to make installation or setup easier. This bot uses dev builds of discor
   - Latest development version
 - [Discord API app](https://discordapp.com/developers/applications/me)
   - You'll need to create the bot account for the app if that wasn't obvious.
-- [imgurpython](https://github.com/Imgur/imgurpython)
-- [Imugr API app](http://api.imgur.com/)
+- Required for Imgur plugin:
+  - [imgurpython](https://github.com/Imgur/imgurpython)
+  - [Imugr API app](http://api.imgur.com/)
+- Required for xkcd plugin:
+  - [xkcd](https://pypi.python.org/pypi/xkcd/)
 
 ***Setup:***
 - Download or clone the repo
