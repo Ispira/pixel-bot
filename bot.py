@@ -61,22 +61,26 @@ def load_plugins():
                 log.warning(f"Failed to load plugin {p}:\n    {exc}")
     first_launch = False
 
+# Helper function to change avatar and username
+async def update_profile(name, picture):
+    picture = f"config/{picture}"
+    if os.path.isfile(picture):
+        with open(picture, "rb") as avatar:
+            await bot.edit_profile(avatar=avatar.read())
+            log.info("Bot avatar set.")
+        await bot.edit_profile(username=name)
+        log.info("Bot name set.")
+
 # Events
 @bot.event
 async def on_ready():
     # Set the bot's name and avatar
     if first_launch:
         load_plugins()
-
-    if os.path.isfile(f"logs/{bot_avatar}"):
-        with open(bot_avatar, "rb") as avatar:
-            try:
-                await bot.edit_profile(username=bot_name, avatar=avatar.read())
-                log.info("Bot profile updated.")
-            except InvalidArgument:
-                log.warning("Invalid image file for bot_avatar.")
-            except HTTPException as error:
-                log.warning(f"Unabled to update bot profile: {error}")
+        try:
+            await update_profile(bot_name, bot_avatar)
+        except Exception as err:
+            await log.warning("Unable to update the bot's profile: {err}.")
     
     # Load the account commands
     bot.load_extension("accounts")
