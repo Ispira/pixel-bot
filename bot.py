@@ -85,6 +85,7 @@ async def on_ready():
     log.info(f"{date}")
     log.info(f"Ispyra v{version}")
     log.info(f"Logged in as {bot.user.name}#{bot.user.discriminator} ({bot.user.id})")
+    log.info("Plugins: {0}".format(" | ".join(plugins)))
     log.info("------------------------STATUS------------------------")
 
 @bot.event
