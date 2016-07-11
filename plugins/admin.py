@@ -101,7 +101,7 @@ class Admin:
         await self.purge_messages("everyone", ctx.message, amount,
             lambda m: m is not None)
 
-    @purge.command(name="user", aliases=["member"], pass_context=True)
+    @purge.command(name="member", aliases=["user"], pass_context=True)
     async def purge_member(self, ctx, member: Member, amount: int):
         """Purge messages from a member."""
         await self.purge_messages(f"{member.mention}", ctx.message, amount,
@@ -118,6 +118,20 @@ class Admin:
         """Purge messages from a role."""
         await self.purge_messages(f"{role.name}", ctx.message, amount,
             lambda m: role in m.author.roles)
+    
+    @c.command(no_pm=True)
+    async def nick(self, member: Member, *, name: str):
+        """Change someone's nickname.
+        
+        If the nickname is set to '!none' it will be removed.
+        """
+        if name.lower() == "!none":
+            name = None
+        try:
+            await self.bot.change_nickname(member, name)
+        except Exception as error:
+            await self.bot.say(f"Unable to change nickname: {error}")
+        await self.bot.say("\U00002705")
 
 def setup(bot):
     bot.add_cog(Admin(bot))
