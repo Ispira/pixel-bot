@@ -6,6 +6,7 @@ import xkcd
 from discord.ext import commands as c
 
 class XKCD:
+    """A plugin for those on the internet with good humor."""
     def __init__(self, bot):
         self.bot = bot
 
@@ -56,6 +57,7 @@ class XKCD:
     
     @c.group(name="import")
     async def xkcd_import(self, module):
+        """Related, since this bot is programmed in Python."""
         if module == "antigravity":
             comic = await self.get_comic("number", 353)
             await self.bot.say(comic)

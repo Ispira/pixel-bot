@@ -34,7 +34,13 @@ def level(required=0):
     return c.check(check)
 
 class Accounts:
-    """Account related commands."""
+    """Account system.
+    
+    This system allows users to be granted a permission level which can be used for
+    command checks. The 'level' check functionis included for importing to other
+    plugs to make life easier. The permission levels are global and apply to all
+    servers.
+    """
     def __init__(self, bot):
         self.bot = bot
     
@@ -75,10 +81,10 @@ class Accounts:
         update_db(accounts)
         await self.bot.say("\U00002705")
     
-    @account.command(name="update")
+    @account.command(name="update", aliases=["change", "modify"])
     @level(3)
     async def account_update(self, uid: str, level: int):
-        """Update an account."""
+        """Change an account's level."""
         if uid not in accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return

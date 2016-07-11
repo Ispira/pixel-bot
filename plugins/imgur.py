@@ -9,6 +9,16 @@ with open("plugins/settings/imgur.json") as imgr:
     config = json.load(imgr)
 
 class Imgur:
+    """The most awesome images on the internet!
+    
+    This plugin allows basic searching on Imgur including subreddits.
+    
+    Warning: Searching on subreddits cannot be easily moderated, therefore it is
+    extremely easy for a user to post images from an nsfw subreddit to whatever
+    channel the bot is enabled in if this plugin is enabled without modification.
+    The subreddit command can be disabled by changing 'enabled=True' to 'enabled=False'
+    in the plugin's main file: 'plugins/imgur.py' on line 53.
+    """
     def __init__(self, bot):
         self.bot = bot
         self.client = ImgurClient(config["client_id"], config["client_secret"])
@@ -41,7 +51,7 @@ class Imgur:
         else:
             await self.bot.say(random.choice(image).link)
 
-    @imgur.command(name="sub", aliases=["subreddit", "reddit", "r/"])
+    @imgur.command(name="sub", aliases=["subreddit", "reddit", "r/"], enabled=True)
     async def imgur_subreddit(self, subreddit: str):
         """Get an image from a subreddit."""
         await self.post_image("subreddit", subreddit)
@@ -60,7 +70,7 @@ class Imgur:
     async def imgur_viral(self, section: str = "top"):
         """Get one of the most viral images of the day.
         
-        Section may be either 'top' or 'hot'."""
+        Section may be either 'top' or 'hot' and will get an image based on that criteria."""
         section = section.lower()
         if section != "top":
             section = "hot"

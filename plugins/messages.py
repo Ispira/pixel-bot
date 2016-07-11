@@ -3,6 +3,11 @@ from discord.ext import commands as c
 from accounts import level
 
 class Messages:
+    """Message management plugin.
+    
+    The star of the show is message cross-posting and moving, but this plugin handles
+    pinning as well.
+    """
     def __init__(self, bot):
         self.bot = bot
     

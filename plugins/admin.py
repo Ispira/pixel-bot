@@ -9,6 +9,7 @@ with open("plugins/settings/admin.json") as cfg:
     config = json.load(cfg)
 
 class Admin:
+    """Administration plugin."""
     def __init__(self, bot):
         self.bot = bot
         self.channel = self.bot.get_channel(config["channel"])
@@ -27,7 +28,7 @@ class Admin:
     @c.command(no_pm=True, pass_context=True)
     @level(2)
     async def kick(self, ctx, member: Member, *, reason: str = ""):
-        """Kick a member."""
+        """Kick a user."""
         await self.bot.kick(member)
         await self.bot.say("\U00002705")
         await self.log_to_channel(ctx.message.author, member, "KICK", reason)
@@ -36,7 +37,7 @@ class Admin:
     @level(2)
     async def ban(self, ctx, member: Member,
         purge: int = 7, *, reason: str = ""):
-        """Ban a member."""
+        """Ban a userr."""
         await self.bot.ban(member, purge)
         await self.bot.say("\U00002705")
         await self.log_to_channel(ctx.message.author, member,
@@ -45,7 +46,7 @@ class Admin:
     @c.command(no_pm=True, pass_context=True)
     @level(2)
     async def unban(self, ctx, uid: str, *, reason: str = ""):
-        """Unban a member by UID."""
+        """Unban a user by UID."""
         for banned in await self.bot.get_bans(ctx.message.server):
             if banned.id == uid:
                 user = banned
@@ -58,7 +59,7 @@ class Admin:
     @level(2)
     async def softban(self, ctx, member: Member,
         purge: int = 1, *, reason: str = ""):
-        """Softban (ban then unban) a member."""
+        """Softban (ban then unban) a user."""
         await self.bot.ban(member, purge)
         await self.bot.unban(member.server, member)
         await self.bot.say("\U00002705")
@@ -68,14 +69,14 @@ class Admin:
     @c.command(no_pm=True)
     @level(1)
     async def mute(self, member: Member, switch: bool = True):
-        """Mute or unmute a member."""
+        """Mute or unmute a user."""
         await self.bot.server_voice_state(member, mute=switch)
         await self.bot.say("\U00002705")
     
     @c.command(no_pm=True)
     @level(1)
     async def deafen(self, member: Member, switch: bool = True):
-        """Deafen or undeafen a member."""
+        """Deafen or undeafen a user."""
         await self.bot.server_voice_state(member, deafen=switch)
         await self.bot.say("\U00002705")
     
@@ -103,7 +104,7 @@ class Admin:
 
     @purge.command(name="member", aliases=["user"], pass_context=True)
     async def purge_member(self, ctx, member: Member, amount: int):
-        """Purge messages from a member."""
+        """Purge messages from a user."""
         await self.purge_messages(f"{member.mention}", ctx.message, amount,
             lambda m: m.author.id == member.id)
     

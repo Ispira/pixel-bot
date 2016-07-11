@@ -171,7 +171,10 @@ async def ping():
 
 @bot.group(aliases=["plugins", "pl"], pass_context=True)
 async def plugin(ctx):
-    """List loaded plugins."""
+    """Plugin handling.
+    
+    Running the command without arguments will list loaded plugins.
+    """
     if ctx.invoked_subcommand is None:
         await bot.say(" | ".join(plugins))
 

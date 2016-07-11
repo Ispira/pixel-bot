@@ -38,6 +38,14 @@ async def clear_channels(bot, location = None):
     update_db(groups)
 
 class Groups:
+    """Group channel creation plugin.
+    
+    This plugin allows users to create temporary group channels. Prefix and suffix
+    for the channel names are configurable via 'plugins/settings/groups.json'.
+    The channels will NOT automatically delete themselves, it is expect that
+    the users will run the 'group' command when they are finished with the channel,
+    or an admin will occasionally purge empty channels.
+    """
     def __init__(self, bot):
         self.bot = bot
         self.prefix = config["prefix"]
@@ -55,7 +63,12 @@ class Groups:
     
     @group.command(name="create", pass_context=True)
     async def group_create(self, ctx, *, name: str = None):
-        """Create a group channel."""
+        """Create a group channel.
+        
+        If a name is passed as an argument the channel will be set to that name
+        with the prefix and suffix added. Otherwise the user's discriminator will
+        be used as the channel name.
+        """
         if name is None:
             name = ctx.message.author.discriminator
         name = f"{self.prefix}{name}{self.suffix}"

@@ -13,6 +13,14 @@ def update_db(db):
         json.dump(db, rls, indent=4)
 
 class Roles:
+    """Add assignable roles to your server today!
+    
+    This plugin allows you to add roles to a list for users to safely assign themselves.
+    The target is servers with 'category' roles (such as my gaming server which has 
+    roles for every game we support). This plugin allows said servers to let users set
+    themselves to whatever combination of roles they choose, rather than having to ask an
+    admin or set up a complicated role structure.
+    """
     def __init__(self, bot):
         self.bot = bot
 
