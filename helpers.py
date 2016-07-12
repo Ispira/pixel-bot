@@ -15,6 +15,15 @@ config   = None
 
 #### Helper functions
 
+# Take a datetime object and return a prettified string
+def pretty_datetime(dt: datetime, display = "FULL"):
+    pretty = ""
+    if display.upper() == "FULL":
+        pretty = f"{dt.year}-{dt.month}-{dt.day} {dt.hour}:{dt.minute}"
+    elif display.upper() == "TIME":
+        pretty = f"{dt.hour}:{dt.minute}:{dt.second}"
+    return pretty
+
 # Create a logging flow and return the logger
 def get_logger(file_name):
     date = datetime.now()
