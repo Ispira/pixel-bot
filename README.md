@@ -1,14 +1,6 @@
 # **Ispyra**
 #### A discord bot utilizing [discord.py](https://github.com/Rapptz/discord.py) 
 ---
-# THIS IS THE DEV VERSION
-# IT WON'T WORK HALF THE TIME
-# DON'T USE IT
-# PLEASE
-# STOP ASKING ME ABOUT IT
-# NO
-# GO AWAY
-
 ## **Setup**
 ***Warning:*** This bot is made mainly for my specific server(s). No attempt is, or will ever
 be made to make installation or setup easier. This bot uses dev builds of discord.py and even Python itself.
