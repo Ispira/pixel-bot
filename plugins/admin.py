@@ -40,7 +40,6 @@ class Admin:
     async def log_to_channel(self, server, author, target, log_type, info):
         if self.log and (server.id in admin["servers"]):
             channel = server.get_channel(admin["servers"][server.id])
-            author = f"{author.name}#{author.discriminator}"
             target = f"{target.name}#{target.discriminator}"
             header = f"**[{log_type}]** *by {author}*"
             body = f"**Member:** {target}\n**Reason:** {info}"

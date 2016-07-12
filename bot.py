@@ -80,7 +80,7 @@ async def on_ready():
     log.info("------------------------STATUS------------------------")
     log.info(f"{date}")
     log.info(f"Ispyra v{version}")
-    log.info(f"Logged in as {bot.user.name}#{bot.user.discriminator} ({bot.user.id})")
+    log.info(f"Logged in as {bot.user} ({bot.user.id})")
     log.info("Plugins: {0}".format(", ".join(plugins)))
     log.info("------------------------STATUS------------------------")
 
@@ -97,7 +97,7 @@ async def on_command(cmd, ctx):
     # Log it home skittle
     if log_commands:
         command = f"{ctx.message.content}"
-        user = f"{ctx.message.author}#{ctx.message.author.discriminator}"
+        user = f"{ctx.message.author}"
         location = f"[{ctx.message.server}] - #{ctx.message.channel}"
         log.info(f'[COMMAND] `{command}` by `{user}` in `{location}`')
 
