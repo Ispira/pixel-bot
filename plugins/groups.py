@@ -13,22 +13,21 @@ with open("plugins/settings/groups.json") as cfg:
 with open("db/groups.json") as grps:
     groups = json.load(grps)
 
-# Helper function to delete channels
-# This feels like an abomination
+# Delete channels
 async def clear_channels(bot, location = None):
     for chan in groups["channels"][:]:
         channel = bot.get_channel(chan)
         if len(channel.voice_members) == 0:
             try:
                 await bot.delete_channel(channel)
-                groups["channels"].remove(chan)
                 await asyncio.sleep(0.25)
             except:
-                groups["channels"].remove(chan)
                 if location is None:
                     continue
                 await bot.send_message(location,
                     f"\U00002757 Unable to delete channel {channel.name}")
+            finally:
+                groups["channels"].remove(chan)
     if location is None:
         return
     update_db(groups, "groups")
