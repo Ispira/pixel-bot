@@ -10,6 +10,8 @@ from discord.ext import commands as c
 from accounts import level
 from helpers import is_owner, get_logger
 
+VERSION = "2.1.0"
+
 # Set up config variables
 with open("config/config.json") as cfg:
     config = json.load(cfg)
@@ -21,7 +23,6 @@ prefix       = config["command_prefix"]
 log_file     = config["log_file"]
 log_messages = config["log_messages"]
 log_commands = config["log_commands"]
-version      = config["version"]
 config       = None
 
 # Grab the blacklist
