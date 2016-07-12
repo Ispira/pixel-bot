@@ -6,6 +6,5 @@
     "command_prefix": "|",
     "log_file": "ispyra.log",
     "log_messages": true,
-    "log_commands": true,
-    "version": "2.0.0"
+    "log_commands": true
 }

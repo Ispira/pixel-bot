@@ -1,6 +1,7 @@
 from discord import Channel
 from discord.ext import commands as c
 from accounts import level
+from helpers import pretty_datetime
 
 class Messages:
     """Message management plugin.
@@ -16,8 +17,10 @@ class Messages:
     async def x_post(self, ctx, message: str, destination: Channel):
         """Cross-posts a message to another channel."""
         message = await self.bot.get_message(ctx.message.channel, message)
-        header = f"{message.author.mention} ({message.channel.mention}):"
-        await self.bot.send_message(destination, f"{header}\n{message.content}")
+        timestamp = pretty_datetime(message.timestamp)
+        header = f"{message.author.mention} - {message.channel.mention} ({timestamp}):"
+        await self.bot.send_message(destination,
+            f"{header}\n{message.content}")
         await self.bot.say("\U00002705")
     
     @c.command(name="move", pass_context=True, no_pm=True)
@@ -25,9 +28,11 @@ class Messages:
     async def move_post(self, ctx, message: str, destination: Channel):
         """Move a message to a different channel."""
         message = await self.bot.get_message(ctx.message.channel, message)
+        timestamp = pretty_datetime(message.timestamp)
         here = destination.mention
-        header = f"{message.author.mention} ({message.channel.mention} -> {here}):"
-        await self.bot.send_message(destination, f"{header}\n{message.content}")
+        header = f"{message.author.mention} - {message.channel.mention} ({timestamp})"
+        await self.bot.send_message(destination,
+            f"{header} -> {here}:\n{message.content}")
         await self.bot.delete_message(message)
         await self.bot.say("\U00002705")
     

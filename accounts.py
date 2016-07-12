@@ -6,6 +6,7 @@
 import json
 
 from discord.ext import commands as c
+from helpers import update_db
 
 # Grab the config
 with open("config/config.json") as cfg:
@@ -14,11 +15,6 @@ with open("config/config.json") as cfg:
 # Grab the account database
 with open("db/accounts.json") as accs:
     accounts = json.load(accs)
-
-# Helper function for updating database
-def update_db(db):
-    with open("db/accounts.json", "w") as accs:
-        json.dump(db, accs, indent=4)
 
 def level(required=0):
     def check(ctx):
@@ -53,23 +49,19 @@ class Accounts:
         if ctx.invoked_subcommand is None:
             uid = ctx.message.author.id
             if uid in accounts:
-                level = accoutns[uid]["level"]
+                level = accounts[uid]["level"]
                 await self.bot.say(f"Account level is: {level}")
             else:
                 await self.bot.say("\U00002754 You do not have an account.")
     
-    @account.command(name="search", aliases=["lookup"], pass_context=True)
-    async def account_search(self, ctx, uid: str):
-        """Look up an account based on useer ID."""
-        member = ctx.message.server.get_member(uid)
-        if member is None:
-            await self.bot.say("\U00002757 User not in this server.")
-            return
-        if member.id in accounts:
-            level = accounts[member.id]["level"]
-            await self.bot.say(f"{member.name} is level {level}.")
+    @account.command(name="search", aliases=["lookup"])
+    async def account_search(self, uid: str):
+        """Look up an account based on user ID."""
+        if uid in accounts:
+            level = accounts[uid]["level"]
+            await self.bot.say(f"{uid} is level {level}.")
         else:
-            await self.bot.say(f"{member.name} doesn't have an account.")
+            await self.bot.say(f"{uid} doesn't have an account.")
     
     @account.command(name="add")
     @level(3)
@@ -80,7 +72,7 @@ class Accounts:
             return
         accounts[uid] = {}
         accounts[uid]["level"] = level
-        update_db(accounts)
+        update_db(accounts, "accounts")
         await self.bot.say("\U00002705")
     
     @account.command(name="remove")
@@ -91,7 +83,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No account with ID {uid} exists.")
             return
         del accounts[uid]
-        update_db(accounts)
+        update_db(accounts, "accounts")
         await self.bot.say("\U00002705")
     
     @account.command(name="update", aliases=["change", "modify"])
@@ -102,7 +94,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
         accounts[uid]["level"] = level
-        update_db(accounts)
+        update_db(accounts, "accounts")
         await self.bot.say("\U00002705")
 
 def setup(bot):

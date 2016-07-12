@@ -3,6 +3,7 @@ import json
 
 from discord import ChannelType
 from discord.ext import commands as c
+from helpers import update_db
 
 # Get the config
 with open("plugins/settings/groups.json") as cfg:
@@ -12,30 +13,24 @@ with open("plugins/settings/groups.json") as cfg:
 with open("db/groups.json") as grps:
     groups = json.load(grps)
 
-# Helper function for updating database
-def update_db(db):
-    with open("db/groups.json", "w") as grps:
-        json.dump(db, grps, indent=4)
-
-# Helper function to delete channels
-# This feels like an abomination
+# Delete channels
 async def clear_channels(bot, location = None):
     for chan in groups["channels"][:]:
         channel = bot.get_channel(chan)
         if len(channel.voice_members) == 0:
             try:
                 await bot.delete_channel(channel)
-                groups["channels"].remove(chan)
                 await asyncio.sleep(0.25)
             except:
-                groups["channels"].remove(chan)
                 if location is None:
                     continue
                 await bot.send_message(location,
                     f"\U00002757 Unable to delete channel {channel.name}")
+            finally:
+                groups["channels"].remove(chan)
     if location is None:
         return
-    update_db(groups)
+    update_db(groups, "groups")
 
 class Groups:
     """Group channel creation plugin.
@@ -77,7 +72,7 @@ class Groups:
                 type=ChannelType.voice)
             await self.bot.say("\U00002705 Channel created.")
             groups["channels"].append(channel.id)
-            update_db(groups)
+            update_db(groups, "groups")
         except:
             await self.bot.say("\U00002757")
 

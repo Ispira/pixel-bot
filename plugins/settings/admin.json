@@ -1,5 +1,4 @@
 {
     "log": true,
-    "channel": "channel_id_here",
     "display_purges": true
 }
