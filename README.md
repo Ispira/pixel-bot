@@ -26,3 +26,5 @@ be made to make installation or setup easier. This bot uses dev builds of discor
 - Launch the bot via `python bot.py` or `python3 bot.py` depending on your system
   - If the bot can't create folders or files it'll complain because it needs to do that
   - If you're on windows run the command `chcp 65001` before starting the bot else you'll get errors for days
+- Set the admin log channels using the `admin_set` command in the channel you wish to log to
+  - These channels are set per-server and will log only that server's kicks/bans/etc
