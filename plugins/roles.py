@@ -3,6 +3,7 @@ import json
 from discord import Role, Member
 from discord.ext import commands as c
 from accounts import level
+from helpers import update_db
 
 with open("db/roles.json") as rls:
     roles = json.load(rls)
