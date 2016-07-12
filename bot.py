@@ -68,7 +68,7 @@ async def on_ready():
     if first_launch:
         load_plugins()
 
-    if os.path.isfile(f"logs/{bot_avatar}"):
+    if os.path.isfile(f"config/{bot_avatar}"):
         with open(bot_avatar, "rb") as avatar:
             try:
                 await bot.edit_profile(username=bot_name, avatar=avatar.read())
