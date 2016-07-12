@@ -1,6 +1,6 @@
 import json
 
-from discord import Role
+from discord import Role, Member
 from discord.ext import commands as c
 from accounts import level
 
@@ -85,6 +85,30 @@ class Roles:
         if len(roles[s_id]) == 0:
             del roles[s_id]
         update_db(roles, "roles")
+        await self.bot.say("\U00002705")
+    
+    @role.command(name="give")
+    @level(2)
+    async def role_give(self, member: Member, *, role_name: Role):
+        """Give a role to another user.
+        
+        This command is NOT limited by the assignable roles list, so please use
+        caustion when giving roles out. This command is intended to be a shortcut
+        for setting users to higher roles than you would normally want available
+        through the assignable roles list.
+        """
+        await self.bot.add_roles(member, role_name)
+        await self.bot.say("\U00002705")
+    
+    @role.command(name="take")
+    @level(2)
+    async def role_take(self, member: Member, role_name: Role):
+        """Take a role from a user.
+
+        This command is NOT limited by the assignable roles list, it will remove ANY
+        role from a user.
+        """
+        await self.bot.remove_roles(member, role_name)
         await self.bot.say("\U00002705")
 
 def setup(bot):
