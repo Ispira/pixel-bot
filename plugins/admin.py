@@ -4,17 +4,13 @@ import json
 from discord import Member, Role
 from discord.ext import commands as c
 from accounts import level
+from helpers import update_db
 
 with open("plugins/settings/admin.json") as cfg:
     config = json.load(cfg)
 
 with open("db/admin.json") as admn:
     admin = json.load(admn)
-
-# Helper function for updating database
-def update_db(db):
-    with open("db/admin.json", "w") as admn:
-        json.dump(db, admn, indent=4)
 
 class Admin:
     """Administration plugin."""
@@ -33,7 +29,7 @@ class Admin:
         to.
         """
         admin["servers"][ctx.message.server.id] = ctx.message.channel.id
-        update_db(admin)
+        update_db("admin")
         await self.bot.say("\U00002705")
 
     # Helper function for logging

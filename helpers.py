@@ -28,6 +28,11 @@ def get_logger(file_name):
     log.addHandler(logging.StreamHandler(sys.stdout))
     return log
 
+# Update a database
+def update_db(name):
+    with open(f"db/{name}.json", "w") as db:
+        json.dump(name, db, indent=4)
+
 #### Checks
 
 # Command check returning if the user is the bot owner or not

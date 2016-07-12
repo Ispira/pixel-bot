@@ -6,6 +6,7 @@
 import json
 
 from discord.ext import commands as c
+from helpers import update_db
 
 # Grab the config
 with open("config/config.json") as cfg:
@@ -14,11 +15,6 @@ with open("config/config.json") as cfg:
 # Grab the account database
 with open("db/accounts.json") as accs:
     accounts = json.load(accs)
-
-# Helper function for updating database
-def update_db(db):
-    with open("db/accounts.json", "w") as accs:
-        json.dump(db, accs, indent=4)
 
 def level(required=0):
     def check(ctx):
@@ -80,7 +76,7 @@ class Accounts:
             return
         accounts[uid] = {}
         accounts[uid]["level"] = level
-        update_db(accounts)
+        update_db("accounts")
         await self.bot.say("\U00002705")
     
     @account.command(name="remove")
@@ -91,7 +87,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No account with ID {uid} exists.")
             return
         del accounts[uid]
-        update_db(accounts)
+        update_db("accounts")
         await self.bot.say("\U00002705")
     
     @account.command(name="update", aliases=["change", "modify"])
@@ -102,7 +98,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
         accounts[uid]["level"] = level
-        update_db(accounts)
+        update_db("accounts")
         await self.bot.say("\U00002705")
 
 def setup(bot):
