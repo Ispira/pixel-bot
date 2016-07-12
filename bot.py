@@ -14,7 +14,6 @@ from helpers import is_owner, get_logger
 with open("config/config.json") as cfg:
     config = json.load(cfg)
 
-owner        = config["owner"]
 token        = config["token"]
 bot_name     = config["bot_name"]
 bot_avatar   = config["bot_avatar"]
