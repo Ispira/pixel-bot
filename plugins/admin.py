@@ -148,9 +148,9 @@ class Admin:
             name = None
         try:
             await self.bot.change_nickname(member, name)
+            await self.bot.say("\U00002705")
         except Exception as error:
             await self.bot.say(f"Unable to change nickname: {error}")
-        await self.bot.say("\U00002705")
 
 def setup(bot):
     bot.add_cog(Admin(bot))
