@@ -8,22 +8,43 @@ from accounts import level
 with open("plugins/settings/admin.json") as cfg:
     config = json.load(cfg)
 
+with open("db/admin.json") as admn:
+    admin = json.load(admn)
+
+# Helper function for updating database
+def update_db(db):
+    with open("db/admin.json", "w") as admn:
+        json.dump(db, admn, indent=4)
+
 class Admin:
     """Administration plugin."""
     def __init__(self, bot):
         self.bot = bot
-        self.channel = self.bot.get_channel(config["channel"])
         self.log = config["log"]
         self.display_purges = config["display_purges"]
     
+    @c.command(no_pm=True, pass_context=True)
+    @level(2)
+    async def admin_set(self, ctx):
+        """Set the logging channel for admin commands.
+        
+        The channel this command is invoked in will become the channel that all
+        bot administration actions (kicks, bans, softbans, and unbans) are logged
+        to.
+        """
+        admin["servers"][ctx.message.server.id] = ctx.message.channel.id
+        update_db(admin)
+        await self.bot.say("\U00002705")
+
     # Helper function for logging
-    async def log_to_channel(self, author, target, log_type, info):
-        if self.log:
+    async def log_to_channel(self, server, author, target, log_type, info):
+        if self.log and (server.id in admin["servers"]):
+            channel = server.get_channel(admin["servers"][server.id])
             author = f"{author.name}#{author.discriminator}"
             target = f"{target.name}#{target.discriminator}"
             header = f"**[{log_type}]** *by {author}*"
             body = f"**Member:** {target}\n**Reason:** {info}"
-            await self.bot.send_message(self.channel, f"{header}\n{body}")
+            await self.bot.send_message(channel, f"{header}\n{body}")
 
     @c.command(no_pm=True, pass_context=True)
     @level(2)
@@ -31,7 +52,8 @@ class Admin:
         """Kick a user."""
         await self.bot.kick(member)
         await self.bot.say("\U00002705")
-        await self.log_to_channel(ctx.message.author, member, "KICK", reason)
+        await self.log_to_channel(ctx.message.server, ctx.message.author,
+            member, "KICK", reason)
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
@@ -40,8 +62,8 @@ class Admin:
         """Ban a userr."""
         await self.bot.ban(member, purge)
         await self.bot.say("\U00002705")
-        await self.log_to_channel(ctx.message.author, member,
-            "\U0001F528BAN\U0001F528", reason)
+        await self.log_to_channel(ctx.message.server, ctx.message.author,
+            member, "\U0001F528BAN\U0001F528", reason)
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
@@ -53,7 +75,8 @@ class Admin:
                 break
         await self.bot.unban(ctx.message.server, user)
         await self.bot.say("\U00002705")
-        await self.log_to_channel(ctx.message.author, user, "UNBAN", reason)
+        await self.log_to_channel(ctx.message.server, ctx.message.author,
+            user, "UNBAN", reason)
     
     @c.command(no_pm=True, pass_context=True)
     @level(2)
@@ -63,7 +86,7 @@ class Admin:
         await self.bot.ban(member, purge)
         await self.bot.unban(member.server, member)
         await self.bot.say("\U00002705")
-        await self.log_to_channel(ctx.message.author, member,
+        await self.log_to_channel(ctx.message.server, ctx.message.author, member,
             "\U0001F528SOFTBAN\U0001F528", reason)
     
     @c.command(no_pm=True)
