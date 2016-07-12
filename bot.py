@@ -63,11 +63,13 @@ def load_plugins():
 
 # Helper function to change avatar and username
 async def update_profile(name, picture):
-    if os.path.isfile(f"config/{picture}"):
-        with open(bot_avatar, "rb") as avatar:
+    picture = f"config/{picture}"
+    if os.path.isfile(picture):
+        with open(picture, "rb") as avatar:
             await bot.edit_profile(avatar=avatar.read())
-            log.info("Bot avatar changed.")
+            log.info("Bot avatar set.")
         await bot.edit_profile(username=name)
+        log.info("Bot name set.")
 
 # Events
 @bot.event
