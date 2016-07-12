@@ -29,7 +29,7 @@ class Admin:
         to.
         """
         admin["servers"][ctx.message.server.id] = ctx.message.channel.id
-        update_db("admin")
+        update_db(admin, "admin")
         await self.bot.say("\U00002705")
 
     # Helper function for logging

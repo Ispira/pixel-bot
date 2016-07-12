@@ -29,9 +29,9 @@ def get_logger(file_name):
     return log
 
 # Update a database
-def update_db(name):
-    with open(f"db/{name}.json", "w") as db:
-        json.dump(name, db, indent=4)
+def update_db(db, name):
+    with open(f"db/{name}.json", "w") as dbfile:
+        json.dump(db, dbfile, indent=4)
 
 #### Checks
 

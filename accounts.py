@@ -76,7 +76,7 @@ class Accounts:
             return
         accounts[uid] = {}
         accounts[uid]["level"] = level
-        update_db("accounts")
+        update_db(accounts, "accounts")
         await self.bot.say("\U00002705")
     
     @account.command(name="remove")
@@ -87,7 +87,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No account with ID {uid} exists.")
             return
         del accounts[uid]
-        update_db("accounts")
+        update_db(accounts, "accounts")
         await self.bot.say("\U00002705")
     
     @account.command(name="update", aliases=["change", "modify"])
@@ -98,7 +98,7 @@ class Accounts:
             await self.bot.say(f"\U00002754 No accounts with ID {uid} exists.")
             return
         accounts[uid]["level"] = level
-        update_db("accounts")
+        update_db(accounts, "accounts")
         await self.bot.say("\U00002705")
 
 def setup(bot):

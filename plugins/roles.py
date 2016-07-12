@@ -70,7 +70,7 @@ class Roles:
         if s_id not in roles:
             roles[s_id] = []
         roles[s_id].append(role_name.name)
-        update_db("roles")
+        update_db(roles, "roles")
         await self.bot.say("\U00002705")
     
     @role.command(name="remove", pass_context=True)
@@ -84,7 +84,7 @@ class Roles:
         roles[s_id].remove(role_name.name)
         if len(roles[s_id]) == 0:
             del roles[s_id]
-        update_db("roles")
+        update_db(roles, "roles")
         await self.bot.say("\U00002705")
 
 def setup(bot):
