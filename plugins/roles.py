@@ -20,7 +20,7 @@ class Roles:
     def __init__(self, bot):
         self.bot = bot
 
-    @c.group(pass_context=True, no_pm=True)
+    @c.group(aliases=["roles"], pass_context=True, no_pm=True)
     async def role(self, ctx):
         """Role related commands.
         
