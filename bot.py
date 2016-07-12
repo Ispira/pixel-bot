@@ -80,7 +80,7 @@ async def on_ready():
     # Status header
     log.info("------------------------STATUS------------------------")
     log.info(f"{date}")
-    log.info(f"Ispyra v{version}")
+    log.info(f"Ispyra v{VERSION}")
     log.info(f"Logged in as {bot.user} ({bot.user.id})")
     log.info("Plugins: {0}".format(", ".join(plugins)))
     log.info("------------------------STATUS------------------------")
@@ -143,7 +143,7 @@ async def bot_quit():
 @bot.command(name="info")
 async def bot_info():
     """Display information about the bot."""
-    await bot.say("Ispyra {version} (https://github.com/Ispira/Ispyra)")
+    await bot.say("Ispyra {VERSION} (https://github.com/Ispira/Ispyra)")
 
 @bot.command(name="status", aliases=["playing"])
 async def bot_status(*, status: str):
