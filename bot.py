@@ -1,7 +1,6 @@
 import sys
 import os
 import asyncio
-import logging
 import json
 
 from io import StringIO
@@ -9,15 +8,12 @@ from datetime import datetime
 from discord import Game, InvalidArgument, HTTPException
 from discord.ext import commands as c
 from accounts import level
+from helpers import is_owner, get_logger
 
-# Get the config and database
+# Set up config variables
 with open("config/config.json") as cfg:
     config = json.load(cfg)
 
-with open("db/blacklist.json") as bl:
-    blacklist = json.load(bl)["users"]
-
-# Set up the config values
 owner        = config["owner"]
 token        = config["token"]
 bot_name     = config["bot_name"]
@@ -27,18 +23,13 @@ log_file     = config["log_file"]
 log_messages = config["log_messages"]
 log_commands = config["log_commands"]
 version      = config["version"]
+config       = None
 
-# Set up logging
-date = datetime.now()
-timestamp = "{0.year}-{0.month}-{0.day}_{0.hour}-{0.minute}-{0.second}".format(date)
-log_file = f"logs/{timestamp}_{log_file}"
-if not os.path.exists("logs"):
-    os.makedirs("logs")
+# Grab the blacklist
+with open("db/blacklist.json") as bl:
+    blacklist = json.load(bl)["users"]
 
-log = logging.getLogger()
-log.setLevel(logging.INFO)
-log.addHandler(logging.FileHandler(filename=log_file, encoding="utf-8"))
-log.addHandler(logging.StreamHandler(sys.stdout))
+log = get_logger(log_file)
 
 # Set the bot and basic variables up
 description="""
@@ -74,6 +65,7 @@ async def update_profile(name, picture):
 # Events
 @bot.event
 async def on_ready():
+    date = datetime.now()
     # Set the bot's name and avatar
     if first_launch:
         load_plugins()
@@ -90,7 +82,7 @@ async def on_ready():
     log.info(f"{date}")
     log.info(f"Ispyra v{version}")
     log.info(f"Logged in as {bot.user.name}#{bot.user.discriminator} ({bot.user.id})")
-    log.info("Plugins: {0}".format(" | ".join(plugins)))
+    log.info("Plugins: {0}".format(", ".join(plugins)))
     log.info("------------------------STATUS------------------------")
 
 @bot.event
@@ -134,13 +126,10 @@ async def on_server_remove(srv):
     log.info(f"[LEAVE] {srv.name}")
 
 # Global check for all commands
+# This applies to EVERY command, even those in extensions
 @bot.check
 def allowed(ctx):
     return ctx.message.author.id not in blacklist
-
-# Built-in check for the bot's owner
-def is_owner():
-    return c.check(lambda ctx: ctx.message.author.id == owner)
 
 # Built-in commands
 # Step the bot
@@ -180,7 +169,7 @@ async def plugin(ctx):
     Running the command without arguments will list loaded plugins.
     """
     if ctx.invoked_subcommand is None:
-        await bot.say(" | ".join(plugins))
+        await bot.say(", ".join(plugins))
 
 @plugin.command(name="load")
 @is_owner()
