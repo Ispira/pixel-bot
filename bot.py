@@ -10,7 +10,7 @@ from discord.ext import commands as c
 from accounts import level
 from helpers import is_owner, get_logger
 
-VERSION = "2.1.0"
+VERSION = "2.1.1"
 
 # Set up config variables
 with open("config/config.json") as cfg:
@@ -23,7 +23,7 @@ prefix       = config["command_prefix"]
 log_file     = config["log_file"]
 log_messages = config["log_messages"]
 log_commands = config["log_commands"]
-config       = None
+cmd_on_edit  = config["commands_on_edit"]
 
 # Grab the blacklist
 with open("db/blacklist.json") as bl:
@@ -73,7 +73,7 @@ async def on_ready():
             await update_profile(bot_name, bot_avatar)
         except Exception as err:
             await log.warning("Unable to update the bot's profile: {err}.")
-    
+
     # Load the account commands
     bot.load_extension("accounts")
 
@@ -92,6 +92,11 @@ async def on_message(msg):
         log.info(f"[{msg.server} - #{msg.channel}] <{msg.author}>: {msg.content}")
     # Handle the commands
     await bot.process_commands(msg)
+
+@bot.event
+async def on_message_edit(old, new):
+    if cmd_on_edit:
+        await bot.process_commands(new)
 
 @bot.event
 async def on_command(cmd, ctx):
@@ -148,7 +153,7 @@ async def bot_info():
 @bot.command(name="status", aliases=["playing"])
 async def bot_status(*, status: str):
     """Change the bot's 'playing' status.
-    
+
     If the status is set to '!none' it will be disabled.
     """
     if status.lower() == "!none":
@@ -165,7 +170,7 @@ async def ping():
 @bot.group(aliases=["plugins", "pl"], pass_context=True)
 async def plugin(ctx):
     """Plugin handling.
-    
+
     Running the command without arguments will list loaded plugins.
     """
     if ctx.invoked_subcommand is None:
@@ -178,11 +183,11 @@ async def plugin_load(name: str):
     if name in plugins:
         await bot.say(f"\U000026A0 Plugin {name} is already loaded.")
         return
-    
+
     if not os.path.isfile(f"plugins/{name}.py"):
         await bot.say(f"\U00002754 No plugin {name} exists.")
         return
-    
+
     try:
         bot.load_extension(f"plugins.{name}")
         plugins.append(name)
@@ -198,7 +203,7 @@ async def plugin_unload(name: str):
     if name not in plugins:
         await bot.say(f"\U000026A0 Plugin {name} is not loaded.")
         return
-    
+
     try:
         bot.unload_extension(f"plugins.{name}")
         plugins.remove(name)
@@ -219,7 +224,7 @@ async def evaluate(ctx, *, code: str):
     except Exception as err:
         await bot.say(python.format(type(err).__name__ + ": " + str(error)))
         return
-    
+
     await bot.say(f"```py\n{result}\n```")
 
 @bot.command(name="exec", hidden=True, pass_context=True, enabled=False)
@@ -232,14 +237,14 @@ async def execute(ctx, *, code: str):
     env.update(locals())
     stdout = sys.stdout
     redirect = sys.stdout = StringIO()
-    
+
     try:
         exec(code, globals(), env)
     except Exception as err:
         await bot.say(python.format(type(err).__name__ + ": " + str(error)))
     finally:
         sys.stdout = stdout
-    
+
     await bot.say(f"```\n{redirect.getvalue()}\n```")
 
 bot.run(token)

@@ -4,6 +4,7 @@
     "bot_name": "Ispyra",
     "bot_avatar": "avatar.png",
     "command_prefix": "|",
+    "commands_on_edit": true,
     "log_file": "ispyra.log",
     "log_messages": true,
     "log_commands": true
